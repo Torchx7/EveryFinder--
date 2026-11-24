@@ -1,0 +1,32 @@
+{
+  "name": "everyfinder",
+  "version": "1.0.0",
+  "description": "EveryFinder: an OSINT toolkit launcher with a built-in terminal",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.everyfinder.app",
+    "productName": "EveryFinder",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "package.json",
+      "build/icon.ico"
+    ],
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "artifactName": "EveryFinder-${version}-portable.exe",
+      "icon": "build/icon.ico"
+    }
+  }
+}
