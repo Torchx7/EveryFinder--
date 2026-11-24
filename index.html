@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EveryFinder – OSINT suite</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#0b1830;--panel:#112445;--ink:#e8eefc;--mute:#9fb0cf;--line:#26407a;--acc:#ffc933;--acc-ink:#0b1830;--warn:#ffd75e;--warnbg:#2b2610;color-scheme:dark;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+
+
+*{box-sizing:border-box}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:url(data:image/webp;base64,UklGRs41AABXRUJQVlA4IMI1AAAQEAGdASqkAaQBPt1krE8opa2tKNIsEbAbiWZu9pZ4p0C8QJo74Nhc7Ltlu30KAR1+EEtY/1nW2f5i/1s+bHX/jbU6wH69et20HqG8s+ez83fn3B5gfOnn3/3X7Oe6b+8f7L2B/8J6Y/+3+yvup/eb1Ffuv6r3/Q/dX3nf4P1Cf7Z/qvXB9X/+8/+D//+4/+1//////vJesV/av/Z6a3X6dF/4T+4Pc9kZ7TuyT2N8A7z96Z77zsJQNz//sH3d/IQnaP/Tv7DPLVzhgaeJWoiv6eJWohaUodamDTqXAv8TJ7ohwNIp1c8ZlGypTVWYh8B8E+j2K7gr/Wo84STF7TeViMFLSrLwCqXqsLRDGMe2YhJff8vHRqpV0sKM8qs300GcL5qYvXrHqETNEkcT1FiY4+0ciXEhKZTh/XLu1CHumIOzv1xIIwjTv1MHBk5Y5otgurlIGwKgtRb/iNTOpqTPKKQkea4CnANXYp1MBTyMNsttfBXPXhFtsD99GH0/nPtgLOMqa1iAJq12yLidCq4aKUbagRxPKknKtsKZJPml910a/2Un2SfgcpXukdLfANiEOcDV8Abd408BTuEOK6/MPfApNMBpJbwt+dBCjIatq+oX7B56w+58MG0FnvTA5yKDpXymZIU1RYcLnXIjdNZCAuu4Dd/uZ4Kq7RtjT7BAIJemGFh291R6e9ih2cH7l6ueBd6swGA803mn2dp6LPuHK8WYhcgQ489PWbh6WzURau53ZWfmERVtx4FIcSAee84OB/6+GVecLMTI8Ojtek4v8Y7Vlfk8oKMFCW8RxQFcb/VmAjYsiPeG8mKz+avccZXDcI99Iu2id49QwpCACWLpT74p3wgYpT7Fw3POczAGhfyeVT/sSvMIPLI5PO7RHOdPEeEA47+gU5v/84jTkn+Frshy+uptNauxSRJQc/CcqK6NvDgogCio+8YcNHBagfytv0LGVkP4t42aPfhPHAGKnHDYXbxAaSsJLp9Fj57Q08c7ktebyMFNKBgnP1YLUdKtbbElfsPaqdpQM8sFtF8KDXWX9Cm11j3MycQo43F/HZuoRApcqQpu9z6pcXWBgt20y+dvaHVyfDA1vDCcugLjtA6uQwzKv89RbZoGGbp4rAYYf5EslOdPEHmvFDX44ZczK2dS15UfL0yvT80h4D6tSMYLIwmYpAXdK/ZhPZmq0bnnVbSwJVPFYvDoHvFdKPdKaxEv4/RlElXC58VUcEGo7JdPDlSA2hwLDFny+hjBcXN0dT9mAVQYYXNWd4OXFyLLdhPHb2aDoTXTex7g7Ii9U9LVXicpT3m3GHxekm4TFTUAubX5p5r/tbhk+0hn0na7jpIIuLcxV4o2zHasRuZDMHWwjricil1pLH2RkCd/ma/QTfnyVIKza2weLLKAIszBAPzZNwqIo8guOrOCg8cdGRjRfzp6p8lEvDBzQr1rK8n2v4g6w7zw+bLuBnQhLriXhIUD3TV9TtfxVt39OdQGxj96xwlx91An0eig+E4cqJFYq2V9+A6ehX/oH27Stec0MnDDEenDwjMniYCaMadAYHmqkxihatVVZEpbl2eRATIScQJ3rZdgbBcG1lEpZknGOWYWVi3T1p1JhdLXamyEzvmkPdcIL/wXAjXCN61kF+CUlDeXH8wVrXTAW1PMOvLUNz2eqQYvwHw4iNsw2XR3xjjBYS+yWIbEi/a/jTqURfNwYX7aNsC+7R/S3QAuim7GPYXSE1yb3w+nKtUlluuNzU5yczVJW3Z7GkTBeKno6Gv1Dg9LSCxBmkbcfzn77PVkGLOXutl3fs3VvHM612kvDV4/b5TtA7706Ud8wfn8LYL1/dM/NT+u+ajMo+7DfM3J3pB+DCzIr+b9ucWBJYaK/UqMmHAter88DkdJZkdPu1ZiKLECQH5HeUHXwcRg2arZZkOBuJot91Mb1mY+/vDvawCPDJKj4VZZavMTYBzJyEf126OkGFr1uIfs5zT3QrhyewFoqJ7vPIoV0Llmx7VTOjdJM9wTJQAaC4LwACb++8uOchgEaQLcXIIaF5WRVdglxybQ/Pk8RbGGVS3Hr7ChgRZyCbjBfnyifWy9o9sYWD9QuVgSeUlCF/8iYFayuaYiniR+WTVx0QDMU3AzZzzT3zcxBxRoYWNupFADfe9Pyv81dP9iz7rFwWfE9f7nqciCFLQKF1sqd0R0AY6UAp98c6Ad2OLyQTV8eS1gnaHzfMx2g9A0qWeiggAAt3n82q/APcir+FZtqmBgVAWnvc+fbYWp5WcHP+nmwwT850M/JwNeFYJ2k2003Rhqa6Z+oR++vWTxrvf379kXpc6KSn5Es7WRKPWKXp7tDFf4DQtYqD5oRo174h1G3r45r6RQKl5RVVPjNd0EZZH8sSOLGu3Z+Rxhmr5Ql36vQWCc/cRnyb32JEW8tZhwNB6OT+utZQDcOXPQwsP+hqAB7jO2CpqnY8sy8z8iiutU3vgYoGrLO+JH2iEgx5Az5Q6eaub3RPjIVcdQjb3wOs+pEPMXEFuOlS9Gvd0u+ZRp7R18GD9GUdO0ByRCFtsy/kZ6f+u5em7nDDw2z21rKuCBF1te4JYKLyU7q/L6Ewnx1MsNGvxuhte20YIFBZLIfQQmNXyQZB/8TJbEYsM5iaA04BDV4nf+se9Z9/RdI5IxFVE0yvoKxOmbkCRaPWyPsFwZB9DxVEgQBp3krI+4mwkB2WpNFXo5+phqz0DDE7TTvbWaQ0sp3uxiyD+uUVzDp22lusm4/bN3muLsZsJTua08st+676i8K/XSwYyabwLF9NmgfKsxpioigbruzCIvwcwSdGvEnNmn6dsFB/8FP2TOclhwAWan2EFiChCoriOFpjyU0d61qqWqOW4x15f08Dk8oLaWY4OGlcleCmhS2gsgRHuJTX6/vSgcTcnjxd0AAP7y+m2sya0MqW7DGDeqLnxjEkvJOwP1ZLw9Am4hQOkmajgKf+vnMZ4JoC4XVtY7LaQjwCIsl0KsZjTPOQDNDqzl4OrvjrD72EbzzFeTD2d8CoTjS1LMbysJmY7P9GK0TtD+DtyJkycAyvEsRpB1PB4DaVVmu1aWSbVN4eiB+0XzokmiQJJBXKre/730R4Cd76JGVJtduxDBiD5aXc9VFBd+hhAZoDMtiIuS3JWKhHF5dvBdqOZaaYmRosF2xYfkIvE7O/z4YmxW9QF8MM1Irx/Sf2GclA+HkReiLADMhUEmbDEIeDld+KAtxZrlHBtYePgvIjtVbRBRqEBQZSSPnatDcg6kx9BviGPiAOjBbvCyHiyu4XsqtIBYPZnc+/e1iFmUP/AZxqqJ02obdHzVGoEMF+JqR5cNldhoGdupxneLJSpKNaCt++cJtm2t5VyzmYUUfT7A9g+UqekIDTQE7rrepbmfmnn/UGe7WmucE0wgIGr6qeQ56867IENW9qUUT0BxdeYQORVvoS8IoCG2zYy62D7uYTNw7tiXtW3dX9AaJgs1WRfJzpLtEUJigDP6dcxDwGf7P7QxhgWDsBiocJPj8K6yUdsz3a1YZQL6ChHQMHF4ru4gV13BDJ1rB3Vi8E0vxnUhOl9aUC7XcaXSr7OaJ4cFECsgiI9SImCfDtx9IyNnprplSrkCqGcRQgV+LNEwQuxb7gcMd+xQf+fNkHU1S4wxh1vZsVrFXnBynvrgI4hClpOSM21IFQ5dbVvbBbtsGH14KIEHP+Y7KGEvdcSzGhHr8P9F/usaX2YxXhgWm2uWz9ACIlEQ+4C+Jq3S/iHASoesIxZkyIWr64O++DTwHPD9zh0DTW7MFzlx0/nMlbxkmgyj90rbTvuknBwcFDcgCMbzbpIK9I+v0VbljgXVm6vABjEwhyyQ1O3LiH2LutSe5kTnuTRZ21TsElCgUKfZuhoB3dy8KV1WEohvV8vKdAJtCBVLzxpFeq3ZQK1v0zgE4gCvZZ07/2v99G3/VnKtNGzWjBwjOlYP4IaYKPAi4lEMtaFL2FzfppftxfS9jB0lBvLqwZKtT15Yb6mFrarCVDgS3sKfw5YRzzWHI6mjwpGt84ZP98dQ+lO5XgX6Nbev2q/cR/WGzRQazAiVtnTihivAycyCuEFh724JkSllCXWzPtJObvEZLl3NJfXAY/grgWMOeQzk2JIlyWSuhV6Kg5oVU0B8ZQDuch+NPRB9ZTvEcbOOdNKlKh8T5VRU8ri3nTwNBWcht/lHCoZJI/+FwZnA+CiOJ2nYUPwN9meJ6HgLuUBw/07enAbP/9bkNhYFQ4RwegJSTlEaEzx+EyeBB86L02xhFoC0liDpiGHwBuE5C1fjaELRwnvXe1KDGduqtUxLKaEJkqtgr3dkRcPRo4NibW4nvjSChrcYq43gffjkDhsV8gCZpYyntg7i5Z7WbzDFHdA5wkO/5ZhaYlic1F9IEn79hXblhT4EsqAIcwwNehr01c8MwbPp+cmM9WNdqRf8sV33zscP98wwJ3kleuNQimX2rYMYddng1Rluizii2YiNMh2EaPxRe7LYXiZ2Yd9k1/9a2LfSCFIBJJSo6wtIyh6WkaK9ZjMkhZ9TwS//kyKMl6t/sAN1l76BPwBe6SZNWODhFGirzrfYhmlX3HJRQzysjlTxEcNsBHVHCtyluNmE0BAAyBWU5PV7PsgJ9zvRSV40U5rMzkpw4BSfZFE+HhEEhUyC4DYHxtWyfaX0gBaK3zr1km587WPzGwa6V5/siB/Rhk22lEeORAe6EeAbP9gNO08wUHsbyRu5cXQy0hqXKZHDEHr/+iygbPQLpYW+f0qQUTEVDpAAIgQjcW9ac33kq2pdamkROB0hJ5dynhkTQu3R++Tzg71bVbbcCIYI7D8MAbCOdYeXdMTVUlwqHP6GX21b6qbG8Wtb2JaufBcDak3anr+RFcDMrabLgT08xkqhvsfdDsc36jkOTWWFyQ5JVetcjAW7x4OB9OHMRgrWSszRYKZSH7eY62wP2NMwVhM8kgwVBIYWcZswYkXgNpR1qlZawGwmfz0wpsLRfW/X5MuPmN6St97f4SFsOaP9csn1slJuGaVIFo8cbGreiQPinxT6wSefXjDExVMXc0HX+UQJykrqk0LwoXv8rRSlvpXKtvx2iQy0Y8Kg1TWd+wXhCBxaTnjo734uHh5QA4CzHWBS03mYdYwp7Qe1WGKxGiL+x5IY530LiJTaiWIV8ynLe/V3B7rADzq5edssaLGizkl80rPD9MLackuFy/RgoAfnFTBY1xL6c6xi9kXBgBZ2j5ndz66ljqj8Yllo0DkXrtEenYXYsW1/FvQc9PWTOjR4jjG3VR0tJ6Y+1VMyiz8Umz42ZrZBnqTbphrcp8lQUMTXKEu1vxpIyQ5PT+X1iFkDbTlEMqgH8en/Z3QFG5zJjvnQzS92EeWYL3mNOo6+OyPAWNx4tN6KWWJUyuaVOo/2kBpM/YsrzRMc5eNX6jCciGPWeKl9zqm1/9+fa8EJJGyhqsPOfdUc6yKUDL1ZKXnlI+Bg9ns9+DTNHv18KdU6YMUdC9SU+uwPH3DUae6dLxzsCgTtfF9njn9z8cu/8igm8T6e4CmACdVXvkXsrRtrh8J1Ndz0K1eDT9h8cgT4GPUVurs50rihvNgEHc09Q5wK+Fx2yWj+TB0HDsfEA6IjmfU1y/B/63wYYPMGBRicJbAPa8dpsrOZaMK3lr/P1tR/mKXo00Zx0eQJLdrWYHR/yCk97x93/eOwLpPMNcGWu/OKq4j8BZUzlToFVbTRazSIwSK034nfcOX6suTtgAelpisl8DDPC88AA9EkzpC7wydbraiw3Br6CM0nxxgxGuiCL3bwFo6RJ3edKDSjXDuN5fkH8KU1nv3M+PqlWI4aU6SvBd0F/PATj36tj8ULnOfR6E80+D8/HoFjlOxTpQ9/xEuAO0J/rYzj8MlYYMZSrf2oGR/gBBZlvZMzvIMD7jPNQdghkDbVrCzpt3/fNmMcOHeZh+v3e0AiUAlYxim5G7X0OiB7upMXNm06ePPMt6XzTyqCzOC0ZdtAH+u3aGoDlCTm15zJN7ajoqCsVoF4RRv/QP8btZDjGAL6wuQVA3K8Wc/JTAGHhMQ7eX7r4sZQIJHKnVbbmQnJXC7iKTGrbmbyTnvB2L7WZPiJIE/SzXLfeY4VsyB1f+P4ZxY70obpMnOUam6ZF56TS97wPbjRxnpVYBijonPnUummWo4l0UkfJLs5f5R5/rsYXY1+Rn+VE4tqaRCAbLrlrWFMXjz6YfrotSmbGFx/EzBBDle6Lc97/1dtBDtr3KIvYEQObM/F9p1oQNXkHlJuIOz5Ha3UhOJbyR41jm7v8CJVygTnhrq6pIueTBoUycNSnkcZlr+kSlYtn4n1C/bw9sBPECRQs+eLVuwF3zGWvpKmJ6NpXp1V3gvg3ycLUyFbWUU2x/AwBVFSZAdYhwEwnRGLedLVtlQqSUSqQjld1tp5nHsRZaZkIB6TkTFJ9p4TJUrd/dHHee6+Dhl+Yo5adb5C9LvGr3HqJfx6tMHIegTu+pQs4DnpJogtvhFOmDMwH7TLiR4f45XpGVYPPmRM4hyp2bKNGocx0zyjDAiFRRYVabeaGAgyiYfZUcELXVBU1W8Eh1OCAXEuq45oHVrt8Z9BgvjUWG5BKFW+NMEgIlG6LQDIZsziHZkWUxdV5QsLoxGFvsgtHykq6OnQ2HJ+1QxNEAEhChGTvdNCdRSRqQo1DKKmMwm1+ON3bN8qgFp9PRZryPxMpWr9MO0UN4QA+ou8kBREHVAr0h5t42A8FQmL4HJ7Z4KiPYot1U28d0BxFAcwS+E5oFFBKWKLYLTUomce3sFnc+hTaDmr3HQ7hyuaUQWtdj8QWcA9O5XyRmx6MxKG499GKCrGhM1ex47ll+D2y5HJbeik979vO1JslEtrYV1kN26bTibwK6jq4toT9KK+sRA6jo47tBMyibx/IoOdAHGIsjWj38CwtjXYHla43/S+UwB0nKTwgPOMGx1OhWnKm43SzrSfoWWS/I04jFzQnsRgWwTxJqCLxt3+hsYQ0l/U8CBiPT2+QUwP43MlP/urAFyAjR3nXmurxSP1ecniSZ/zQaWLBt8491GHq445RjobHDzjxc+9Q5BGCDxgP49VgnD1uFBlgDZMqsXnW+WTVdcuEVpE89L6IsRtO0jjsMcjG+MHYmK9udDxD87mrinjlG2pkc9Q/r1r5HZ1flAqqhb+YOqtg7+FTbE5cTsN4m21KR28WOpdgDrOCQfDppNzotmdvD59nxvj7YcNZkhklywatW5n+dBQJFp3qc+SmnMD/p/Cw3eVWjdM+J2nnnLNbNJYdr6/w8AyZpoUpl1bIFzRP/X7vGPwNNc7KE41pUIXzGyseGM1m2a2TwhS4QCaiisYRnAY1rl5CVxZNrtNunYrfP502JveQErFH+l15cX0FcKg3/SY9gHJR5I4xanU9g/0CXFQ5BQ4HfY1WyStnJK9ezC0eh7TaTssIFUyPEjtWCbHgfacshz1MXpIBNtC8EI+T8WjKDSvJAGFQpxC81mkRXCymT2v+bl/bpCX6Rt+JnabrBx0YUZ+zzq7DI28KmcAzYzGMaQFTVUasu8leLS2znvYkTVQlUVAALcYi8USHjxIncnU8mL0wpD2B8f0xjHut+w65YLMetZkVpDYMpAgpp6dD0PSJrwRc0dEMTxJV9O46Nf7+MBeZYpRJYLWIjgZVJ7nkHrlODN+CuyVMRda8qnwdX1PFMj6YLkzgE3rnwnDBk9M3RgYdT4i3I2eYFVQbtcLC/oabw20BqVgSlX7yH/+XSJY3anmSK5kSorf8XtJRtOFZbLIxDjz+2CAJLGK92vx1w8xkT9nvw/7cm83JXlWOv5NhJfsFMFTNYPrKM5uRvzOQh0e6mYFkvvGO1cl22P8xcFQRctWyf8As/xTcosEw1DCVfytDqY7UlRFBmdpKA2QL8fRogtqdCuxIABub6PtmCSVDb8ItwUnm4k/iu2XWIme2hK7eQK67D/2OOD4t17cF27CXiMhf9twKeKtV22uiqlM+ZxRMdNxHXWUy5I3hJx0Khj1KpiQKL5gKKei0tz2Co9x7YIfztw9VZtOXVd4OQc7ogmUYc9zNzuI71ThI66scbTTGzNLZjHJm7x2UpWi397xJoPTR3+KAIlw9mqBeY8RVzvFv+v1EvFOyiQjNs998g+LRUYLRfFI7Zl0dKTg58tnhnuBWM8GFojeUsFm336yP6iUJu9XFMAiy6FgUVUpNsrzIntTfznwl7oFoc9CyeeycIV/PQYEBEtPU9AaCHoGRwfexH+Mg9Bj+pIkGTrDgotH0pZDITlFZsM0ToksR8CyFQnOmPNNtahsLJFVleFXzUlj1ifXME0SI6emwkXINKngtDd+ONwjlIktZSGme5QXmjSoQUqi6kMh53H8QW9+A7rmUzNRdI31tNwQGRW/meCY4RUOOhOUJTWh2Z+IS1dJtR9XLpUOvgwOXWDYwoNdz0Dpu+GJROOPwdRBOh9Nrsb03IwMpc8iiUUvQTKXH9IXXDkR/QLxbvz2m6qprZIctsb3plAPP5khlMxUAwOQKWs6NHUZi9NZx7h6TwBYIj5mU+M+YAMKlAmZ8/gUBTBatie8NbxfZ+1ZQ//6YG0/NCTPOAQOkfx/AkMG+r0oiF0Owj0343hMySBskevbx/06BYas45A4+39ckmw3AHQvDrXKNNP4OUnb5R43B2khfz9gLfkAMVBfj0itI1YtbHkK95ijoHcloN4g1Wu1ZmY/zUVYEQiJq/Cb5MbZdx/96G2e55qcigbetA8rP5N77rqzeuOwHu+6l08H7u+v+4LhVVtDh0UgdtU5d87v8fNIEJMwMSmvZL/lcI7ULGU6UcIpM1pe7i20zebF5UUx0HF7wNsCjMEQ8TnqCLKHIIromdRwoCysUXYn4d8OvD5WBWMizChKH/cHA6/Y0N6m9p14FUPmXY9D5OK5e1ucJESfRuC9PUzittlz0jio+3MWYjb/bbRg85mkBF0r2NQcNkR+KMoYLM9+GC4fca+Ay+eOHIGBfIlYIX8CWjRGYLlrURJB1SeDuyk7xg8Tm1gZg70iYPrvNAfnGf8x5vbvXDDc3KT9+DvxmqwJo21nLKj+KGI9Rm0Oqr7FjJKg0hbNgEio7ySYgnWTFZjYitYA/IkCfIHAgDJZs9yBVBB4prTIFNX+sgZWD91zANVdqJkw97gVTOqWMP9v15eXTUDQ4onyU3QSEp21UADdGlFkPcIiUlWCYcLg4r1f+xTU9OduZVmOBjYgPbnoAH8GWg7KhVh2uv78uzOVN2vXx9hWXcUk/rdXZZ8sHRam+WQnRrguiUVJ+mjnXxLnLXhbh9cdjoR8xHi3n9OBLgq+iKNWIu/SaqySkLxYOm5F9s0NmbpbPU5PtT7VL94zfnRT+CFMED1mMQ4cr3aEpeoJ0GofNXYZZjfsvRDhsm4fKhcYp3ouzCsg/Y9nHxoWHP1GX8TrBWJ7TU/HXxbyn5sMMibhOvp5JLJDe+MWpRqnYeHdj2tl7zpvGOPRrbUCU+TvDedBQGVoZSK8XFCCTwfOboZU0hGYj/AjSbEc0rVnr9WfU16mThq+/Wwg9c8sML++kr3QYfcp54jkwg/Yhu4Q5aXJCJL1zklYXaUw8LKO5R91A58tDKf3IBXREBCZUNuaZDp5p3rCkHz5P8hqQfkqK7SnDfY7wUBTD4iVwtbRASc3ED0Y1itp+1UvAJ4zYodO2LKbjdDHONonFzUsiy0315Pa0bJ6cxSM4G7olbH3ovi8PNsI6ZRdXoMeqU/72XiTihSXb37xDcfH/VaCQpLYiJuXfJDkgKg5TEtw/08U1epwHrtHRhdhslEvg5bWAZWdhlU67II5nkLt+vAfn8Dwoa3GeUsjNHqABak11U1NJwwDkhHOolyeE8OkId4gBV3Pm12HMpe+RVLtwgAKDEwC4+fFdH0FHUAHMAi7rZqO+Ylda20NhwrQ6aQhpw3QqBT3WJaFzPAEayap3FksysOGtASZmN0lDa+OjGWN7RwDlB+kOnEfeaP7Y9VV2O9w48JlgOFTbt25K+v87WrWBxHntjDPIsALJ9r0OlwlSBGkiNq9eZfdYWWNvzrQt4nlplL/sQKpbcVhoVTJ1UHTyH18Sq2vjPfj3WBanPOQiLzfP0vtzBNcnMiXDl1laXE/eZHUlLLblonlI4yl9eUh61Pewk7Wln4XZBlu8SxU1yAGZkW0n5ZIgpfYpWsixRQyBVKHKOfEsZKflYBWrILVhbcAue40Gyenrgtdop8sbovUqDyX1ouGY4XlzfrlGX/qlHHhyT1uYXTwjat8bjN489mDVXZPNFdhmfn/JCA9ix25H1SOOPF7305LBdCTti8V/iz3zMkPg3N0slRBMpL1JR7lzKaV4YH0EyJYIQnaHQizMt6I0pG5wrv5ThK1Muz8vkoclN1r+yhNGenqI5/BOdBq7xrQqlj1Zohdhc1DQXS9chGnpEsngp1XL/Bxg3wEvGau54g2NZXMip+pS+hpwUrIcYINjCcCjMoKmWDvWBu8cqy8Ksi9IbEhx0UQimhnOKIV1qyDtdjjBQ1zJfPMwrSqAGyRX0MpejvgbHGJ8q6phj5mce9mzHuoCdNcpI/LoH8oppevJY6C7F/3QPvttIuV0+o/eDmrZq+UtbRnvAd1onBCaexexwqgI0KYoLbMHk+FZLzYCnWRxpwmYqgd4dZ9tUUN91e+EbO3YvNMEeLNpXfbumT2fHNvC9hjkI9tTqHIfkwnh46ymp4v3v0fLNnqIrlq+Yb+rJ9txMCDFm9UWI3oScA1Pc7AeIL/bIh02+rJ6Zq64/rXqmCX+UIDxvwaiR2x/RXYh5H88Q4ErvpBp9/FP0ivE8hzhsk0g5+ZkqgGhm6Bm2B3GhOLJUhk1mzm4XdhSYGAcDSLJPgw/rdDhOFiGn7nrQoIPeGU+5qG/+J3/iPwRueSsAC7tmonvcidj11xKueyHFwWbdpl1uNy0Iw07GGK4gWGU5F4b7tiP6LGLEQRSJksioDTyjN0RvPNB+ME3ns50AWpqCmAZ9NeimkZhkBxl58l/GgA5w6V5Cs0fuyyfL7Qm5ocrzC0cxvplyxdW9XC2QOiIfqEFeUgzscy86anIVNif4kOM28XH6sWUCUwvjzPJ6akn18+vxLfM6NIIIa/5Y9fbYY/u80+53ykXJz8NWHxPi+MjM0QtG8B3JHrPI6J0tIT8ntroz4nhI3Bh5nuvspRA3x2ov80EJWyUrVmHdYkgOgzi80TQmPGdMmvBZWrbnCeIUWg3W/Qe94unZziPuGv6uYUTkUwW3gfFyC+8eojB5RMxhpGXB1ZL38z1S7Nq+x53ON4DyJVYAXx6S68dASxxdKOhr8vNMLqnG66qP5CZsBz9rozdLTwGsb1d7QbrYb1rjbA8/TIRLryL3j8e+j6ih1TXo6POoZ4bTDFvE4vwhCO5xRF1hl1OkXBvh/+x4tXJ8zbRq4vOugpmdJaDgmA6Zi09bopeNwK9y/lEwvAKlBHmAygu9I2psJDfG5blnZiAh4saYGIyHGZHoTUMrn5XcvZiZ30ZdmS0RMJNmL3WsOn4SSIZgxbxDNMisErEWtLMWQHRcbsYWP55OJNVd4txW8geSiBHHLEg6hLBWzMiChNy5EzxjHGdDT1nGXYcdlE25Gg38qC6eSiIOWIvnK3YUn4xqa3pxce2upcm5naIHNp/D+xwhQDpFh6O8a9m7QV+bhMKBP4Kj24h4u8Bb4Rwc92SkmadDPt/PuLf9QE8b/v+l6KSbcvI5zBrGLfIaBbm1DgjROEklGUayLmBBs1X7T7Y136mYW04hpCkS1Ffu5gaaDFFxE6Yk3GtOKRcoZTefNQZtuqvLKbaYgcM9+dogWi9iofqP1+yf+Gx9sF0IPmB767q+0a9GVdcadUwYoMb+MnrJdH3gU1cAAbDnk9Rf0eAEJ3zqbIolCulo/WPSgJls/Fc3UjFIOJgji/2H/FyJJsd6YpSfVn+6bpOy6/7Wx4m0DXq6eQLZo9blQnO6d/FdkfIZQ8YhRUBhx1RMn1dwRuppHlqRsKCzmVEzQAkx5aKEB0ngaPbwGqZ6jzJBE+5qjncnijG6oFaR1k40rubVvw8ALT9ljo40xS2k0PJ5KORIzQhCeSOyEU8VTA8B8DYOsnoa/ryJX5pgN6X9nyeVfqdvF/S+IgdvrbMSjIp/pQxyp0YQkMVFRWKediEllEpoEE3VyMa2zEZ377mJyvXDCYOyiJQ/8YTFLk71u0BoB9zBtLlG9jmxbJZenGWm5FeI75biibrXm1K+o7fQh/NsJnt7iTiMAG6NFXdilF1WWzi7MZyTKSWGYm1HIt+hGNjnO77THNRn+8iOR1s2+XCIVG2ec5m1suHIOyIStoIKzHXAPtjbkcVPI2CFLjS53Y0qMCBOXrHtsXeuQlQcP2BBzo7FhrmrfVOARKKO4aT+iZGGJ4V414sICBBw3z3zzWwEi2BQVdsxu3BdlPJ/v+BpBzT8UJF271QhmSM6fZSk3wnsJuVKgAseD4Kq9WaD3Nk8NJtQRGsQ70evmhjTHil3a4rcTN6ppfGlVWOjaBcHXPSa+3nOEvCc2ePRFGC9cu0uJvvtAzC4puRqtL9CyL9oadRc/fVXnJvvnLa/L4Leixhcno3439kya9liY3k8GDFqciH9HPIzRe2PjdCFJijw6/GibS0g03V+Z6xxNUt9/wkyHYqq2yItwa6IDeCdBS5oTKQNA0rUVPUP1b1ddQWBzXxsLfgyCm/lr/Thyky7YOfn+8X48frnm08Ze1tQs8F9JIVgykd/3Hzq1fbzK22Z5oB4I0zLA7yreSIQ0NQo7Ol+NfuXvNXFiZAiaoaqNqPiNw8T3EQOL3EN/dwyaUEPpZiyLjrJgBAh//5PJDnoaQbSLPIpWXRhdAu1eErsTJ30auuiVzRhb9XffOgYC7qSY9m6xO8WRNjo6sBthFn2tCRoONgLO5TWaUyfY6zJLsrZFtRzNbooEpQZm3kRGMdUClxVmM4Z3ltMKLlviH0LGsk5siNeMaIavvwIUblDxt+KQwqK+F7QUDQdPmUDqXU44qDKDzvUd6i06bnR5GO1/GUfZF7XPBsfoa7kSpEVlvJNHBcMl/aNAD/DWuMmRwWMj+Fb6pVXrwmG5bxxvQoxHshXW/EpMLsUDSVhJRmxyR/ny4RBtR7ggt4CxQw2G+9t2qgznauupsR4AyUYjnWzsudGBFQDzC4yU1hrB+4VNHFqEJ6XPlU1ND0zwqM91lOberHEk+XqLXZcE6bZKOQvVGhF0k8QgOC9rhLx8us6snRIq4hEPcLJQnjd9BpXy4wLbpwuRu3H7AnW/1KrMaeSjE2ImvXOQ+z6jZce1659nHJlUpOKT2yUc4Nolw2pcLYqJzrROs6dS8JUXY9BnRzPj2nzCGIzHG0XNyJJQ+PpHMdGFrOSjvar8G5WU2emBlY+MCOJ0bZViWchvt9o8Yx1ptndJekhbUpgAnBQSlGoTdTn4BAZ3FS4Azl1+EofmqLY/PhEbaHokDooFNs/Xuiv6dtMfjDsGVycHg3kuIJ5uf/01k4COiyfk/XpSDcz3Nu9Da5D3lf+uZx2isaADVI0WldXgwf2ccR21WArDVse2MJ0BDU8zE79/m6KqwEw9IegjhPEeVC8km8jDN4yqyBy3nwQVDG2LJyMdNNHIbyB3l3qnvD7IRyFtFxvZck08uJtoUj/YzXmd7LA1Tc7NIiMgBHYlTuXwYdw+5+28jHE3NLlsxhK7wgOKMl4sWkW4btbCmMZfd5EkRwjSrwcawcsVPvZ0oBhm3V7cnLkWVkR/1896JVVFSPdqhLnwHA8DK4G11vGdaT12oCacqafMbGOjRbCtsZ7P8iAo04XkcNBghLv1wu+FSRs/okAE3N5xZklpD5fzV/4Iudxz0pNDW9x4LtrGt6Uji+Q9p06WMu8yiWLnSIjEScTnIMev88IeOPg6biA5h3XJLHfZ0xVrHfPy53HZwhqPAL3EnB3pEN8123EWDZaHW/qSOWy/Hnk4Ifk0vX8rDReqhcm4LdJs8WW6IICOQJL5QGDrw+5IFdP59FIq+92Bn6BQTNaZ1fNV+Da+TUTZnkY6GMwh3MKB7etOmNwkQbw/IhD1sZL/Pl37BHzDLOGqD1eglyCsJNQI+5DgOJ+cx8lShBL7e2Ah471YuiJG4Ej4S7tpUmuskbhJg+DO9HYWH3M3MkXpIHhQQLs/6s1rtS6/v2IRxqOkswnkbXAepDZfkvysVFQCtYsBMTOhk6w4V/CfAps3BZ0AYb7sWANp/T3P3nh0jWMNDkxLrunMTqpD/qL2k5VQUsl9Z1pcCfLPPjlCzudvvNak0YKLjumNE0a3yMuX7lv6bHfFn815pFStRo+GavoMOKGYk+QI+QgYYLNhZWZYHfe7ZxfEEIlpalFoNtz5RwdcSFUl9lijJwSgPdwauSCea4h8uU7l0aVHUBXQkvnSZSEdhbnYeWjWRWp7Ka+M1yad1Wm+G6bj4R+lE6MFtZBQkSg+MxDFEXLzPyrDe8c2vgdzSgmMFVwRmsRk9u7pf/QZWRrelGAKDE33DeRJwq3Cm8JjJG0Kt4SdqEwcjGnHtMuZzz9V9jZ0KJoOaHA0ZYcpLoHPTl7s/ikmdTDCa6zGkJDhNtmVTQEU9nRzVwXLLOwB9WHqW2yNlN1LpiPoJVoRdvPOs8u4OyACvw6PRXIG1CszDvuVdsJ8Skgc+We8WIm7PPqkHoKoCe5fVHTfwigc8mrGWXgDUweLhqO1bCMwdkccEmKbjkCyEeGKhzL0ZCfOwHbGpRVZD8StAZxTNsF12CZNUqSflhQR8JeiC9j8k5fZputhsDWAgEOf+ZQCUk1LaAuB/Fev2Ocou4pahBszYibMYd/DXgnXAr/OGNNvTIOnn4R9uaPl7SzoNf7gSdl/iarsmCSdPJssYwTlDT00TUML2ryeKfhskLEdNGXYKypiC7exuNvtDvgBSgJzvGEvJTAYXluXiSavNoZI4wHXurQTN5GbN3RdUNNgsRRiiuUzqBofRXnWIfjK0ANXdLgT7FDpK5ydelYyMwa2uinpBK0EkkiPUfwkGym7VsfPGkMvhm2T3CpigkJdC3f8UAXF5wjAkocFZ9yYphwQ8mt4AAKwh3vIWEHVv5l/MnZC12J/uvhX84NT62/5y0uqGLG3KsUrfYlepVzg2HsVwWfaZzcmyjG9Z2JYB28u189n/0ftAQ5oD32XGV7h2h7fHDuEZaMAuuODzXBtG7U2unvCcZZzrF4dI3bJrh0iVv9mHMBmEuJtyBzOFuhmC3gLxfXNmqPNV62tYYQ5kg9AgtqpybnrVzoh/STb4J4kyCELmTz68zhSQevAsCLEgdXiBi9vwsFF/l0oMa7HSYRT2kaBb7c0Gp2mc9fZNy1+lpGRleDvgyWK224pnIAajuoIrswcA3OR6Ep4N8jjNAD4lot4dQ/iP9ulAjuCdi0QA7t1cf6GQ5WmrsbcUSPyFHvOai+iUR4nsjbWgqlek+hUG0PivVUzi0rQtanXJQGRbW7Z4W+6oYF7PuG8X8SbpTHc7IwnoDDB5gdiMX0WRFB5eZ/q/xwW39Z5hOBpyJ6uuP1ohlYmN7LvWvVs/F62aVUI6aR0U7yLll1UlnbxtU35+Xmgrs02dwIF1qfLMqVweYizpQ2+QGU2cLwaoa3YwpaGUdRDHcEyOfFbvxIPEAPOR2XVM9B66NagTB4m1KKL9TQm33CpZ/dfEaymUalIZTwbbjP20lf3sXItIqf4I2RL8T8xxmqeQXyHr9YSnSLdQhlUKXluK/0eAlc9NqGcEsL5ASVx7zQY5qJ6BPKc8SjiQXdtvgUM+uw2uW4tisA7rvwaBH/VUSHoAotAYDzpAdrCUcAAatiesLF1RuoMWU1GSV5u61zM1nXbROjqO15sbUTQMrOyDDbJGBZZrvq4wcneMx+KuRr44egzB3fbohZnfCVNT2zX/ukg4hNs7D46CwU0fXDOpGHTlG3yNiOlQZBJxH/Dliq2jaSKdVj3BtopgRg8AeKoti6G8EyISyB8i4hKdPHgR/aeTIIXOQE8UNOk/fnR8GM27rRLvK5iNUqAwxeU+WoA/Z7QmkI/2AfaKQ1SF1dYk2LML7lNq4y2/EeA3FBimrQoaWo3ydHo4Ec63zQFEdeNLvKrFijq6U3JpCt3j6u85CtKvClHt6wqdMcieyxjGsctNGMBFOh+ciR3vhAbZFHFcWBQGbL/VfINogguUA9/rbjfdGLX5X72M0JLcpi1uhcJ3QrCwR+TRx0t8P62u753dGiEIpRBTBdvsm9XA9uJ+WffboHdy8grHyJmsWkkq3dSmnS/dUMZNJ+W9kI9kiu6/6l4iqzAXh5vazyvBBnbN436t4w7PtJsFscWAgI5sbrB0+2zc3MdCnJikdRKqnRfrKrcYg/hT9IRKllr9AmkkFmNjM7hpI0WCYUbeDAXAoywQcnv9PgbLQTe6/rLU8BWfamENwrhjSdk9i3ExQKKpqy+Hlxm95Pp6NYFN1kYqTKeJz/3V8ewF1bCMxFs/px1zRN2435LZx6B0TX0HyWpOKt5+7NFZZtp6P8JJg2h+5UUZW0jtvY1x+ULH1oNgZKtELbrR5SaZHRkGTLPThibdvtA+ioO0i5cSsgOYrAHslXF5bOMCzBYQ5kDlYFcX8CikalW2nXlmSB1lW2s5ozs0REYIAyUU+MztI2OnZRtdu8GSwM2fHzfKud53B4NP4kfZ0XtrpDHpNLlCE7nbdEFn7hMCoauDR9jdnquRTWOBvOtOZeNJ+Tvb7gDDcCCWxsaTVwMwrcp6pNDbqK2GBHXRNyN3y6bwmiGoA0w5EbwH/R86F3ShEFtxiI3hW33/S5qv80hTJsl53JopvTZzIh483fOtLwTjoby8SrcbNWITSULDky1QkRGo73/ckXl+LuPrPvnqsCTlF8eQ2UhtuA9IYIIe/+j5Wd3fWZSdcxjmnjwk+/d1lKnzsOSbQRIeOX9Kfpc5Q8+9Pbrf/C5L2XkYKpLLrSMRREH62/uGIR/S2qq4AsO6QV+TG5hqd2d8LeHxD2EBEU1/UBCgkwyl5bwMplHhgU5quVowk0a7yn84LAnmxnviqtug5MFaKtrZO4DsiCU3MpHwAyHVtpESRdy0k1uwu3tqobepmn3q1AtLtzoq7KPECnwX0Z6ca2iSZoeaqooXSme1qYM9Pl/ZWselCfUQIFqUyOkaNlvLkwHrt3BiYFFkEfGgoR4AwRoP5CorzHrjcgctVI9D29e4V41ST7srT1tw/D3PJLGVYX8n6siOqK+yIREQw4DyQaBrUc7LP9k5pI3ygq09BYAxp8ng1jO2sc1uRnteUGjGt6O6HxTnkVRiGwi4XwM19NCi+Ckwxf1XYzrKbM0MiXdyeQDiWkCYbjaLL9KzrnjY0NlT3wlty824IVmvzWBXeJhbpgh2RL/9fDt7VNAzsLIEmOVDHFhCEvxF770ID/RdJLSXlDQ0eUna1Zfj5yrUKVE545H6S71NerzopxR1AbHM88zoxIpUaU4KBp7KShIz8QCv28FVTDTnZRzr+d7EDGgAMJY8b7gfK8E6VXeFkxPOfXUw7sZdGQZ5yVCyylpfxS+DrZ+CDLA+CR+tAz5LNYKOfdiTKekTKo9i5vK1PexmNb8siv0093hewpuZxq/0xqh8E03N3pi1hy5+JahZQ1qv+HoX8Mq3Nh/v8gGspmuSZ92LIkiC6g3TfzrAffQEF74JiU+sZKW/1BXo213RURrLRRrZmOTlBPpIwzcbziiQI5m2jQJU1LIgEG3890s97kdZtq1tmIxomQcCGOJHD0rYOsFIG4Ce2WJt8fNILZ3/HUq94bw+Cb/thji9+2kGndkXxpyCtO32uHnKlv8ttivIbHxmRG/PsKevl7hWRdzF9jomNsJAUYkqCpEAtQGbVv+7K+Up29MjcaNBwsUSTmVIFo2btcfFi/jW4cDbWa2+hbVcLqn0oFyzTpV7aoz7LuLR1x7XYa5xZCAsS7+gxXNcB8+G8ZdSpcN4dR1D5tyVAtxpttLe+VhptbxASr/OGFvqQNekHunB2ZN8IrKMwPQckjgXRCCyYuyGoU183G1KJM+FWljSpiGSlqzoOoLhsdrSQtJtzUYgGJ/DCGO0W22ZroWBBLtxqwn46ZgLSEi6sQ7v6c/D2e1mSrq1SlUS/ILqfDgGdA/eSJnauAl5+UcLhHo4RMWGbPbhcCe7GWohLezfHBHsCBu+dw45QGLxUnrq/SddW2thCpnzVrNwB1A5FzYM1dk/MEqTAXLpKWroVUSW6SlI+Yy9bk2Lc45KcC5//GPWBvPTIBHiPCWLVAyPcyAOuPPJths/DrlsRKXGFuGkJEmWggfjx926ilVAJfcMs35gkAGwAAAA) center top/cover no-repeat;opacity:.28;-webkit-mask-image:linear-gradient(to bottom,#000 0,transparent 80%);mask-image:linear-gradient(to bottom,#000 0,transparent 80%)}
+#intro{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;animation:efFade 2.6s ease forwards;cursor:pointer}
+#intro svg{width:min(40vmin,260px);height:min(40vmin,260px);transform-origin:42% 42%;animation:efZoom 2.2s cubic-bezier(.65,0,.85,.4) both;color:var(--acc)}
+#intro .w{font:700 28px "Bricolage Grotesque",Figtree,system-ui,sans-serif;color:var(--acc);letter-spacing:.02em;animation:efWord 2.2s ease both}
+@keyframes efZoom{0%{transform:scale(.5);opacity:0}25%{transform:scale(1);opacity:1}40%{transform:scale(1);opacity:1}100%{transform:scale(45);opacity:1}}
+@keyframes efWord{0%{opacity:0}20%{opacity:1}40%{opacity:1}55%{opacity:0}100%{opacity:0}}
+@keyframes efFade{0%,72%{opacity:1}100%{opacity:0;visibility:hidden}}
+@media(prefers-reduced-motion:reduce){#intro{display:none}}
+a{color:var(--acc)}
+h1{color:var(--acc)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Figtree,system-ui,-apple-system,Segoe UI,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",Figtree,system-ui,sans-serif;margin:0;letter-spacing:-.01em}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 20px 56px}
+header{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;flex-wrap:wrap;margin-bottom:20px}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.05}
+header p{margin:6px 0 0;color:var(--mute);max-width:46ch}
+.notice{background:var(--warnbg);color:var(--warn);border-radius:8px;padding:10px 14px;font-size:14px;margin-bottom:20px}
+.grid{display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.side{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;position:sticky;top:12px}
+@media(max-width:800px){.side{position:static}}
+label{display:block;font-weight:600;font-size:14px;margin:0 0 6px}
+input[type=text],textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+textarea{min-height:200px;resize:vertical}
+input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.types{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 16px}
+.types button{font:inherit;font-size:14px;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer}
+.types button[aria-pressed=true]{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+.hint{color:var(--mute);font-size:13px;margin:8px 0 0}
+.err{color:var(--warn);font-size:13px;min-height:18px;margin:6px 0 0}
+nav.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:18px;overflow-x:auto}
+nav.tabs button{font:inherit;font-weight:600;background:none;border:0;border-bottom:3px solid transparent;color:var(--mute);padding:8px 14px;cursor:pointer;white-space:nowrap}
+nav.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--acc)}
+.tool{border-top:1px solid var(--line);padding:16px 0}
+.tool:first-child{border-top:0;padding-top:0}
+.tool h3{font-size:19px}
+.tool p{margin:4px 0 10px;color:var(--mute);font-size:15px;max-width:62ch}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:inline-block;font:inherit;font-size:14px;font-weight:600;text-decoration:none;border:1px solid var(--acc);color:var(--acc);background:transparent;border-radius:8px;padding:6px 12px;cursor:pointer}
+.btn:hover{background:var(--acc);color:var(--acc-ink)}
+.btn.off{opacity:.4;pointer-events:none}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:8px 10px;margin-bottom:8px}
+.row code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;overflow-x:auto;white-space:pre-wrap;word-break:break-all}
+.row code{flex:1}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:0 0 8px;position:relative}
+.empty{color:var(--mute);padding:24px 0}
+.log li{margin:0 0 4px;font-size:14px}
+.log{padding-left:18px;color:var(--mute)}
+.bar{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+@media(prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<div id="intro" aria-hidden="true"><svg viewBox="0 0 1024 1024"><circle cx="430" cy="430" r="270" style="fill:var(--panel);stroke:currentColor;stroke-width:72"/><line x1="608" y1="608" x2="850" y2="850" stroke="currentColor" stroke-width="104" stroke-linecap="round"/><g fill="currentColor"><rect x="340" y="300" width="62" height="260"/><rect x="340" y="300" width="190" height="52"/><rect x="340" y="404" width="160" height="52"/><rect x="340" y="508" width="190" height="52"/></g></svg><div class="w">EveryFinder</div></div>
+<div class="wrap">
+<header>
+  <div>
+    <h1 style="display:flex;align-items:center;gap:12px"><svg viewBox="0 0 48 48" aria-hidden="true" style="width:1.15em;height:1.15em;flex-shrink:0"><g transform="rotate(-35 24 24)" fill="currentColor" stroke="var(--bg)" stroke-width="1.5"><rect x="4" y="20" width="7" height="8" rx="2"/><rect x="11" y="18" width="10" height="12" rx="1"/><rect x="21" y="16" width="10" height="16" rx="1"/><rect x="31" y="13" width="11" height="22" rx="2"/><ellipse cx="42" cy="24" rx="1.6" ry="8" fill="var(--bg)" stroke="none"/></g></svg>EveryFinder<svg viewBox="0 0 48 48" aria-hidden="true" style="width:1.15em;height:1.15em;flex-shrink:0" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="20" cy="20" r="13" stroke-width="4"/><path d="M30 30 L42 42" stroke-width="6"/><path d="M13 19 a8 8 0 0 1 6 -6" stroke-width="2.5" opacity=".6"/></svg></h1>
+    <p>One place to launch the free OSINT tools. Enter a target and open it in each tool, build search dorks, and keep case notes.</p>
+  </div>
+</header>
+<div class="notice">Use this on targets you’re authorized to assess, or on public information for lawful purposes. EveryFinder only builds links and commands; it doesn’t query anything itself.</div>
+
+<div class="grid">
+  <aside class="side">
+    <label id="tl">Target type</label>
+    <div class="types" id="types" role="group" aria-labelledby="tl"></div>
+    <label for="target">Target</label>
+    <input type="text" id="target" autocomplete="off" spellcheck="false" placeholder="example.com">
+    <p class="err" id="err" role="alert"></p>
+    <p class="hint" id="hint"></p>
+    <label style="margin-top:18px">Session log</label>
+    <ol class="log" id="log"><li>Nothing opened yet.</li></ol>
+    <label style="margin-top:18px">Recent targets</label>
+    <div id="rec" class="links"></div>
+  </aside>
+
+  <main>
+    <nav class="tabs" role="tablist" id="tabs">
+      <button role="tab" data-t="lookup" aria-selected="true">Lookup</button>
+      <button role="tab" data-t="dorks" aria-selected="false">Dorks</button>
+      <button role="tab" data-t="toolkit" aria-selected="false">Toolkit</button>
+      <button role="tab" data-t="im" aria-selected="false">Image</button>
+      <button role="tab" data-t="vr" aria-selected="false">Variants</button>
+      <button role="tab" data-t="case" aria-selected="false">Case</button>
+      <button role="tab" data-t="dd" aria-selected="false">Diligence</button>
+      <button role="tab" data-t="ex" aria-selected="false">Exposure</button>
+      <button role="tab" data-t="vf" aria-selected="false">Verify</button>
+      <button role="tab" data-t="dir" aria-selected="false">Directory</button>
+      <button role="tab" data-t="lk" aria-selected="false">Check</button>
+      <button role="tab" data-t="gl" aria-selected="false">Geo</button>
+      <button role="tab" data-t="term" aria-selected="false">Terminal</button>
+      <button role="tab" data-t="api" aria-selected="false">API</button>
+      <button role="tab" data-t="fw" aria-selected="false">Framework</button>
+      <button role="tab" data-t="util" aria-selected="false">Utilities</button>
+      <button role="tab" data-t="notes" aria-selected="false">Notes</button>
+    </nav>
+    <section id="view"></section>
+  </main>
+</div>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const TYPES={
+  domain:{label:"Domain",ph:"example.com",hint:"A registered domain, without https://",ok:v=>/^([a-z0-9-]+\.)+[a-z]{2,}$/i.test(v)},
+  ip:{label:"IP address",ph:"203.0.113.10",hint:"IPv4 or IPv6",ok:v=>/^(\d{1,3}\.){3}\d{1,3}$/.test(v)||/^[0-9a-f:]+:[0-9a-f:]*$/i.test(v)},
+  url:{label:"Page URL",ph:"https://example.com/page",hint:"A full web address including https://",ok:v=>/^https?:\/\/\S+$/i.test(v)},
+  email:{label:"Email",ph:"name@example.com",hint:"An email address",ok:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)},
+  phone:{label:"Phone",ph:"+27 11 555 0123",hint:"Include the country code with a leading +",ok:v=>/^\+?[\d\s().-]{7,22}$/.test(v)&&v.replace(/\D/g,'').length>=7},
+  username:{label:"Username",ph:"handle",hint:"A handle without the @ sign, 2 to 40 characters",ok:v=>/^[A-Za-z0-9._-]{2,40}$/.test(v)},
+  image:{label:"Image URL",ph:"https://example.com/photo.jpg",hint:"A direct link to an image file",ok:v=>/^https?:\/\/\S+$/i.test(v)},
+  keyword:{label:"Keyword",ph:"company name or phrase",hint:"Free text, such as an organization or product name",ok:v=>v.length>1}
+};
+const e=encodeURIComponent;
+const TOOLS=[
+ {name:"Wayback Machine",desc:"Browse historical snapshots to recover removed content or track changes.",types:["domain","url"],
+  links:(v,t)=>[["View snapshots","https://web.archive.org/web/*/"+v.replace(/^https?:\/\//,"")],["Save a snapshot now","https://web.archive.org/save/"+(t=="domain"?"https://"+v:v)]]},
+ {name:"Shodan (free tier)",desc:"Find internet-facing services and devices tied to a host, IP, or term. Free accounts have limited results.",types:["domain","ip","keyword"],
+  links:(v,t)=>t=="ip"?[["Host page","https://www.shodan.io/host/"+e(v)]]:t=="domain"?[["By hostname","https://www.shodan.io/search?query=hostname%3A"+e(v)],["By SSL name","https://www.shodan.io/search?query=ssl.cert.subject.cn%3A"+e(v)]]:[["Search","https://www.shodan.io/search?query="+e(v)]]},
+ {name:"Certificate transparency (crt.sh)",desc:"A public source theHarvester also uses. Lists certificates issued for a domain, which often reveals subdomains.",types:["domain"],
+  links:v=>[["Subdomains via certificates","https://crt.sh/?q=%25."+e(v)]]},
+ {name:"Registration data (RDAP)",desc:"Registry records for an IP block or domain: owner organization, contacts the registry publishes, and dates.",types:["domain","ip"],
+  links:(v,t)=>[["Open RDAP record","https://rdap.org/"+(t=="ip"?"ip/":"domain/")+e(v)]]},
+ {name:"Reverse image search",desc:"Trace where an image came from, find other copies, and check how it’s been used.",types:["image"],
+  links:v=>[["TinEye","https://tineye.com/search?url="+e(v)],["Google Lens","https://lens.google.com/uploadbyurl?url="+e(v)],["Bing Visual Search","https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:"+e(v)],["Yandex","https://yandex.com/images/search?rpt=imageview&url="+e(v)]]},
+ {name:"Web search",desc:"A plain search on the target for quick context before using the heavier tools.",types:["domain","keyword","url"],
+  links:v=>[["Google","https://www.google.com/search?q="+e(v)],["DuckDuckGo","https://duckduckgo.com/?q="+e(v)]]},
+ {name:"Exact-match search",desc:"Looks for the address or number in quotes on the open web. Useful for spotting scams, listings and public mentions.",types:["email","phone"],
+  links:v=>{const q=type=='phone'?phoneQ(v):'"'+v+'"';return [['Google','https://www.google.com/search?q='+e(q)],['Bing','https://www.bing.com/search?q='+e(q)],['DuckDuckGo','https://duckduckgo.com/?q='+e(q)]]}},
+ {name:"Scam and spam check",desc:"Searches for reports of the address or number being used for scams, spam or phishing.",types:["email","phone"],
+  links:v=>{const q='('+(type=='phone'?phoneQ(v):'"'+v+'"')+') (scam OR spam OR phishing OR fraud)';return [['Google','https://www.google.com/search?q='+e(q)],['DuckDuckGo','https://duckduckgo.com/?q='+e(q)]]}},
+ {name:"Breach check",desc:"See whether an email appears in known data breaches. Use it for your own addresses.",types:["email"],
+  links:()=>[['Have I Been Pwned','https://haveibeenpwned.com/']]},
+ {name:"Email domain checks",desc:"Registration, certificates and history for the domain part of the address.",types:["email"],
+  links:v=>{const d=v.split('@')[1];return [['RDAP record','https://rdap.org/domain/'+e(d)],['Certificates','https://crt.sh/?q=%25.'+e(d)],['Wayback Machine','https://web.archive.org/web/*/'+d]]}},
+ {name:"EmailRep reputation",desc:"Reputation report for an address: how long it has been seen, and whether it is linked to spam, phishing or breaches. Free with limits.",types:["email"],
+  links:v=>[['Open report','https://emailrep.io/'+e(v)]]},
+ {name:"Mail setup and header analysis",desc:"Check the mail servers behind the address’s domain, or paste an email’s headers to trace a suspicious message.",types:["email"],
+  links:v=>[['MX records','https://mxtoolbox.com/SuperTool.aspx?action=mx%3a'+e(v.split('@')[1])+'&run=toolpage'],['Header analyzer','https://mxtoolbox.com/EmailHeaders.aspx']]},
+ {name:"Number validation",desc:"Google’s libphonenumber demo checks whether a number is valid and shows its format, type and region.",types:["phone"],
+  links:()=>[['libphonenumber demo','https://libphonenumber.appspot.com/']]},
+ {name:"Business email verification",desc:"Checks whether a work address looks deliverable. Useful for verifying a business contact. Enter the address on the page that opens.",types:["email"],
+  links:()=>[['Hunter email verifier','https://hunter.io/email-verifier']]},
+ {name:"Search all socials at once",desc:"One query that looks for the handle or name across 16 social and creator sites at the same time. Results depend on what each search engine has indexed, so private or new profiles may not appear.",types:["username","keyword"],
+  links:v=>{const s=['facebook.com','instagram.com','x.com','twitter.com','tiktok.com','linkedin.com','reddit.com','youtube.com','threads.net','pinterest.com','snapchat.com','t.me','twitch.tv','medium.com','tumblr.com','github.com'].map(d=>'site:'+d).join(' OR '),q='"'+v+'" ('+s+')';return [['Google','https://www.google.com/search?q='+e(q)],['Bing','https://www.bing.com/search?q='+e(q)],['DuckDuckGo','https://duckduckgo.com/?q='+e(q)]]}},
+ {name:"SpiderFoot (runs locally)",desc:"Correlates this target across dozens of sources. Install and start it from the Toolkit tab first, then open its web UI and enter the target. Passive scans don’t touch the target directly.",types:["domain","ip","username"],
+  links:()=>[["Open local web UI","http://127.0.0.1:5001/"]]},
+ {name:"Username search",desc:"Check one handle across hundreds of sites. These run on their own pages, so open one and enter the username.",types:["username"],
+  links:v=>[["WhatsMyName web app","https://whatsmyname.app/"],["Namechk","https://namechk.com/"],["Exact-match web search","https://www.google.com/search?q="+e('"'+v+'"')]]},
+ {name:"OSINT Framework",desc:"A directory of free resources sorted by category. Good for finding the next source.",types:["domain","ip","url","image","keyword","username","email","phone"],
+  links:()=>[["Open directory","https://osintframework.com/"]]}
+];
+const DORKS=[
+ ["Indexed subdomains",d=>`site:*.${d} -www`],
+ ["Public documents",d=>`site:${d} (filetype:pdf OR filetype:docx OR filetype:xlsx OR filetype:pptx)`],
+ ["Open directory listings",d=>`site:${d} intitle:"index of"`],
+ ["Login and admin pages",d=>`site:${d} (inurl:login OR inurl:admin OR inurl:portal)`],
+ ["Config and log files",d=>`site:${d} (filetype:log OR filetype:conf OR filetype:env OR filetype:bak)`],
+ ["Mentions on other sites",d=>`"${d}" -site:${d}`],
+ ["Exposed email addresses",d=>`"@${d}" -site:${d}`],
+ ["Paste and code sites",d=>`site:pastebin.com OR site:github.com "${d}"`]
+];
+const sfTarget=v=>{if(type=="username"||type=="keyword")return '"'+v+'"';if(type=="url"||type=="image"){try{return new URL(v).hostname}catch(_){}}return v};
+const TOOLKIT=[
+ {name:"theHarvester",desc:"Collects emails, subdomains, and hosts from public sources. Command line only.",
+  setup:"git clone https://github.com/laramies/theHarvester\ncd theHarvester\npip install -r requirements/base.txt",
+  run:d=>`python3 theHarvester.py -d ${d} -b crtsh,duckduckgo -l 200`,need:"domain"},
+ {name:"SpiderFoot",desc:"Automated collection and correlation across dozens of sources. Runs a local web UI.",
+  setup:"git clone https://github.com/smicallef/spiderfoot\ncd spiderfoot\npython3 -m venv venv\nsource venv/bin/activate\npip install -r requirements.txt",
+  run:v=>`python3 ./sf.py -s ${sfTarget(v)} -u passive -o csv -q > results.csv`,
+  ui:`python3 ./sf.py -l 127.0.0.1:5001\n# then open http://127.0.0.1:5001 and start a new scan`,need:null},
+ {name:"Maltego Community Edition",desc:"Graph-based link analysis. Desktop app; requires a free account and has per-transform result limits.",
+  setup:"Download from maltego.com and sign in with a free account.",
+  run:d=>`In a new graph, add a Domain entity named ${d}, then run transforms such as "To DNS Name" and "To Website".`,need:"domain"},
+ {name:"Sherlock",desc:"Checks a username against hundreds of sites from your own machine. Command line only.",
+  setup:"pipx install sherlock-project",
+  run:u=>`sherlock ${u} --print-found`,need:"username"},
+ {name:"Maigret",desc:"Checks 2,500+ sites and can build an HTML report of the profiles it finds.",
+  setup:"pipx install maigret",
+  run:u=>`maigret ${u} --html`,need:"username"},
+ {name:"Blackbird",desc:"Searches a username across many sites using the WhatsMyName data.",
+  setup:"git clone https://github.com/p1ngul1n0/blackbird\ncd blackbird\npip install -r requirements.txt",
+  run:u=>`python blackbird.py -u ${u}`,need:"username"},
+ {name:"Social Analyzer",desc:"Rates how likely each profile match is, which helps with false positives. Needs Node.js.",
+  setup:"npm install social-analyzer -g",
+  run:u=>`social-analyzer --username "${u}" --metadata`,need:"username"},
+ {name:"PhoneInfoga",desc:"Checks whether a number is valid and shows its country, carrier and line type, and builds search queries for public mentions. Runs in Docker.",warn:"Use on numbers you own, suspicious numbers that contacted you, or with authorization.",
+  setup:"docker pull sundowndev/phoneinfoga:latest\n# or download a release from github.com/sundowndev/phoneinfoga/releases",
+  run:u=>`docker run --rm sundowndev/phoneinfoga:latest scan -n "${u}"`,need:"phone"},
+ {name:"holehe",desc:"Checks whether an email address is registered on many sites by probing their sign-up and password-reset forms.",warn:"Intrusive: use only on your own addresses or with the owner’s permission.",
+  setup:"pipx install holehe",
+  run:u=>`holehe ${u}`,need:"email"},
+ {name:"h8mail",desc:"Searches breach data sources for an email address. Some sources need API keys.",warn:"Use only on your own addresses or with authorization.",
+  setup:"pipx install h8mail",
+  run:u=>`h8mail -t ${u}`,need:"email"}
+];
+
+const $=s=>document.querySelector(s);
+let type="domain", tab="lookup", log=[];
+
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),1400)}
+async function copy(txt){try{await navigator.clipboard.writeText(txt);toast("Copied")}catch(_){toast("Select and copy manually")}}
+function val(){return $("#target").value.trim()}
+function valid(){const v=val();return !!v&&TYPES[type].ok(v)}
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+function renderTypes(){
+  $("#types").innerHTML=Object.entries(TYPES).map(([k,v])=>`<button data-k="${k}" aria-pressed="${k==type}">${v.label}</button>`).join("");
+  $("#target").placeholder=TYPES[type].ph;$("#hint").textContent=TYPES[type].hint;
+}
+function renderLog(){
+  $("#log").innerHTML=log.length?log.slice(-8).reverse().map(l=>`<li>${esc(l)}</li>`).join(""):"<li>Nothing opened yet.</li>";
+}
+const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(_){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(_){}}};
+let findings=store.get('tb-case',[]),done=store.get('tb-done',{});
+const G=q=>'https://www.google.com/search?q='+e(q);
+const WB=v=>[['Wayback Machine','https://web.archive.org/web/*/'+v]];
+const CHECKS={
+ dd:{intro:'Public-source checks for a website or business. Set the target type to Domain (or Keyword for a company name) to get links.',items:[
+  ['Confirm the domain age and registrar','domain',v=>[['RDAP record','https://rdap.org/domain/'+e(v)]]],
+  ['Review certificates and subdomains','domain',v=>[['crt.sh','https://crt.sh/?q=%25.'+e(v)]]],
+  ['See how the site looked over time','domain',WB],
+  ['Search for complaints and reviews','domain',v=>[['Search',G('"'+v+'" scam OR complaints OR reviews')]]],
+  ['Look up the company in a business registry','keyword',v=>[['OpenCorporates','https://opencorporates.com/companies?q='+e(v)]]],
+  ['Confirm contact details through an independent source',null,null]]},
+ ex:{intro:'Check your own footprint. Use your own handle, name or pages.',items:[
+  ['Search your handle or name in quotes','any',v=>[['Search',G('"'+v+'"')]]],
+  ['Find your accounts across sites: use the Lookup tab with the Username type',null,null],
+  ['Check whether your email appears in known breaches','any',()=>[['Have I Been Pwned','https://haveibeenpwned.com/']]],
+  ['Search your email address in quotes','email',v=>[['Search',G('"'+v+'"')]]],
+  ['Search your phone number in quotes','phone',v=>[['Search',G(phoneQ(v))]]],
+  ['Check your email for scam and phishing reports','email',v=>[['EmailRep','https://emailrep.io/'+e(v)]]],
+  ['Check old copies of pages you published','url',WB],
+  ['Tighten privacy settings on every account you find',null,null],
+  ['Request removal of personal info: most sites and search engines have a removal or privacy request form',null,null]]},
+ lk:{intro:'Steps for checking a suspicious link, file or message.',items:[
+  ['Scan the link for known threats','url',v=>[['VirusTotal','https://www.virustotal.com/gui/search/'+e(v)],['URLScan','https://urlscan.io/']]],
+  ['See where a short link really goes without visiting it','url',()=>[['Redirect checker','https://wheregoes.com/']]],
+  ['Check the domain age and registrar','url',v=>{try{return [['RDAP record','https://rdap.org/domain/'+e(new URL(v).hostname)]]}catch(_){return []}}],
+  ['Look at old copies of the site','url',WB],
+  ['Trace a suspicious email by reading its headers','any',()=>[['Header analyzer','https://mxtoolbox.com/EmailHeaders.aspx']]],
+  ['For a file, search its SHA-256 hash on VirusTotal instead of opening it',null,null],
+  ['Do not open attachments or click links from the message until you have checked them',null,null]]},
+ gl:{intro:'Steps for working out where a photo or video was taken. Set the target type to Keyword and enter a place name.',items:[
+  ['Search the place name or any visible text','keyword',v=>[['Google Maps','https://www.google.com/maps/search/'+e(v)],['OpenStreetMap','https://www.openstreetmap.org/search?query='+e(v)]]],
+  ['Compare satellite imagery with the scene','keyword',v=>[['Google Earth','https://earth.google.com/web/search/'+e(v)]]],
+  ['Use shadows and sun position to estimate time of day and direction','keyword',()=>[['SunCalc','https://www.suncalc.org/']]],
+  ['Match landmarks, signs, road markings, plates and vegetation',null,null],
+  ['Look for the same location in other photos or videos',null,null]]},
+ vf:{intro:'Steps for checking a claim, page or image.',items:[
+  ['Reverse image search the picture','image',v=>[['TinEye','https://tineye.com/search?url='+e(v)],['Google Lens','https://lens.google.com/uploadbyurl?url='+e(v)]]],
+  ['Check archived versions of the page','url',WB],
+  ['Search for existing fact-checks','keyword',v=>[['Fact Check Explorer','https://toolbox.google.com/factcheck/explorer/search/'+e(v)]]],
+  ['Find the earliest source and who published it',null,null],
+  ['Confirm the date and place using landmarks, shadows or metadata',null,null],
+  ['Look for the same story from independent outlets',null,null]]}
+};
+function renderCheck(){
+  const c=CHECKS[tab],v=val(),ok=valid();
+  $('#view').innerHTML=`<p class="hint" style="margin:0 0 12px">${c.intro}</p>`+c.items.map(([t,n,l],i)=>{
+    const k=tab+i,on=ok&&l&&(n=='any'||n==type);
+    return `<div class="row" style="align-items:flex-start"><label style="margin:0;font-weight:400;display:flex;gap:8px;flex:1"><input type="checkbox" data-ck="${k}" ${done[k]?'checked':''}><span>${t}</span></label>${on?`<span class="links">${l(v).map(([a,u])=>`<a class="btn" target="_blank" rel="noopener noreferrer" href="${esc(u)}" data-l="${a}">${a}</a>`).join('')}</span>`:''}</div>`}).join('');
+}
+function caseList(){
+  $('#fl').innerHTML=findings.length?findings.map((f,i)=>({f,i})).reverse().map(({f,i})=>`<div class="tool"><p style="color:var(--ink);margin:0">${esc(f.t)}</p><p style="margin:4px 0 0;font-size:13px">${f.c} confidence, ${new Date(f.at).toLocaleString()}${f.g?', tags: '+esc(f.g):''}${f.s.startsWith('http')?`, <a href="${esc(f.s)}" target="_blank" rel="noopener noreferrer">source</a>`:''} <button class="btn" data-d="${i}" style="padding:1px 8px">Delete</button></p></div>`).join(''):`<p class="empty">No findings yet. Add what you find, with its source.</p>`;
+}
+function renderCase(){
+  $('#view').innerHTML=`<label for="fn">Finding</label><textarea id="fn" style="min-height:70px" placeholder="What did you find?"></textarea><label for="fs" style="margin-top:10px">Source link</label><input type="text" id="fs" placeholder="https://…"><div class="bar"><select id="fc" aria-label="Confidence"><option>Low</option><option selected>Medium</option><option>High</option></select><input type="text" id="ft" aria-label="Tags" placeholder="tags, comma separated" style="flex:1;min-width:140px"><button class="btn" id="fadd">Add finding</button></div><div class="bar"><button class="btn" id="fcp">Copy report</button><button class="btn" data-ex="md">Download .md</button><button class="btn" data-ex="html">Download .html</button><button class="btn" id="fclr">Clear all</button></div><div id="fl" style="margin-top:14px"></div>`;
+  $('#fadd').onclick=()=>{const t=$('#fn').value.trim();if(!t){toast('Describe the finding first');return}findings.push({t,s:$('#fs').value.trim(),c:$('#fc').value,g:$('#ft').value.trim(),at:Date.now()});store.set('tb-case',findings);$('#fn').value=$('#fs').value=$('#ft').value='';caseList()};
+  $('#fcp').onclick=()=>copy(findings.map(f=>`- [${f.c}] ${f.t}${f.s?' (source: '+f.s+')':''}${f.g?' #'+f.g:''} at ${new Date(f.at).toISOString()}`).join('\n')||'No findings');
+  $('#fclr').onclick=()=>{if(confirm('Delete all findings?')){findings=[];store.set('tb-case',findings);caseList()}};
+  caseList();
+}
+document.addEventListener('change',ev=>{const k=ev.target.dataset&&ev.target.dataset.ck;if(k){done[k]=ev.target.checked;store.set('tb-done',done)}});
+let recent=store.get('tb-recent',[]),os=(window.ef&&window.ef.platform==='win32')?'win':'unix',showIntr=true;
+function osx(s){return os=='win'?s.replace('source venv/bin/activate','venv\\Scripts\\activate').replace(/python3/g,'python').replace(/pip3/g,'pip'):s}
+function renderRecent(){const el=$('#rec');if(!el)return;el.innerHTML=recent.length?recent.map((r,i)=>`<button class="btn" data-rc="${i}" style="padding:2px 8px;font-size:12px">${esc(r.v.length>18?r.v.slice(0,17)+'…':r.v)}</button>`).join(''):'<span class="hint">None yet.</span>'}
+function addRecent(){if(!valid())return;const v=val();recent=recent.filter(r=>!(r.t==type&&r.v==v));recent.unshift({t:type,v});recent=recent.slice(0,8);store.set('tb-recent',recent);renderRecent()}
+$('#target').addEventListener('change',addRecent);
+document.addEventListener('change',ev=>{if(ev.target.dataset&&ev.target.dataset.si!==undefined){showIntr=ev.target.checked;render()}});
+function mdReport(){return '# EveryFinder case report\n\nGenerated '+new Date().toISOString()+'\n\n'+(findings.map((f,i)=>'## Finding '+(i+1)+'\n\n'+f.t+'\n\n- Confidence: '+f.c+'\n- Recorded: '+new Date(f.at).toISOString()+(f.s?'\n- Source: '+f.s:'')+(f.g?'\n- Tags: '+f.g:'')).join('\n\n')||'No findings recorded.')+'\n'}
+function htmlReport(){return '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>EveryFinder case report</title></head><body style="font-family:system-ui,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;line-height:1.5"><h1>EveryFinder case report</h1><p>Generated '+new Date().toISOString()+'</p>'+(findings.map((f,i)=>'<h2>Finding '+(i+1)+'</h2><p>'+esc(f.t).replace(/\n/g,'<br>')+'</p><ul><li>Confidence: '+f.c+'</li><li>Recorded: '+new Date(f.at).toISOString()+'</li>'+(f.s?'<li>Source: '+esc(f.s)+'</li>':'')+(f.g?'<li>Tags: '+esc(f.g)+'</li>':'')+'</ul>').join('')||'<p>No findings recorded.</p>')+'</body></html>'}
+async function saveFile(name,data){try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'text/plain'}));a.download=name;document.body.appendChild(a);a.click();a.remove();toast('Save requested')}catch(_){toast('Not saved')}}
+const DIR=`Usernames and social|Sherlock|https://github.com/sherlock-project/sherlock|Command-line check of a username across hundreds of sites.|
+Usernames and social|Maigret|https://github.com/soxoj/maigret|Checks 2,500+ sites and builds HTML, PDF or JSON reports.|
+Usernames and social|Blackbird|https://github.com/p1ngul1n0/blackbird|Username search using the WhatsMyName data, with export options.|
+Usernames and social|Social Analyzer|https://github.com/qeeqbox/social-analyzer|Rates how likely each profile match is to reduce false positives.|
+Usernames and social|WhatsMyName|https://whatsmyname.app/|Browser-based username check backed by a community site list.|
+Usernames and social|Namechk|https://namechk.com/|Quick check of where a username or domain is taken.|L
+Email and phone|Have I Been Pwned|https://haveibeenpwned.com/|Check whether an email appears in known data breaches.|
+Email and phone|EmailRep|https://emailrep.io/|Reputation report for an email address.|L
+Email and phone|MXToolbox|https://mxtoolbox.com/|Mail server lookups and email header analysis.|
+Email and phone|Hunter|https://hunter.io/|Find and verify work email addresses for a company.|L
+Email and phone|libphonenumber demo|https://libphonenumber.appspot.com/|Google’s number validator showing format, type and region.|
+Email and phone|h8mail|https://github.com/khast3x/h8mail|Searches breach data for an email. Some sources need API keys.|W
+Email and phone|holehe|https://github.com/megadose/holehe|Checks which sites an email is registered on by probing their forms.|W
+Email and phone|PhoneInfoga|https://github.com/sundowndev/phoneinfoga|Validates a number and shows country, carrier and line type.|W
+Domains and infrastructure|theHarvester|https://github.com/laramies/theHarvester|Gathers emails, subdomains and hosts from public sources.|
+Domains and infrastructure|SpiderFoot|https://github.com/smicallef/spiderfoot|Automated collection and correlation across dozens of sources.|
+Domains and infrastructure|Maltego Community Edition|https://www.maltego.com/|Graph-based link analysis. Free account with result limits.|L
+Domains and infrastructure|Shodan|https://www.shodan.io/|Search engine for internet-connected devices and services.|L
+Domains and infrastructure|Censys|https://censys.com/|Internet-wide scan data on hosts and certificates.|L
+Domains and infrastructure|crt.sh|https://crt.sh/|Certificate transparency search that reveals subdomains.|
+Domains and infrastructure|DNSDumpster|https://dnsdumpster.com/|DNS recon and a map of a domain’s hosts.|
+Domains and infrastructure|ViewDNS|https://viewdns.info/|Collection of DNS, WHOIS and IP lookup tools.|
+Domains and infrastructure|RDAP|https://rdap.org/|Registry data for domains and IP blocks.|
+Domains and infrastructure|Wayback Machine|https://web.archive.org/|Historical snapshots of websites.|
+Domains and infrastructure|BuiltWith|https://builtwith.com/|Shows the technologies a website uses.|L
+Domains and infrastructure|Wappalyzer|https://www.wappalyzer.com/|Identifies website technologies. Free tier available.|L
+Domains and infrastructure|Amass|https://github.com/owasp-amass/amass|In-depth subdomain and attack-surface mapping.|
+Domains and infrastructure|Sublist3r|https://github.com/aboul3la/Sublist3r|Fast subdomain enumeration from search engines.|
+Images and video|Google Lens|https://lens.google.com/|Reverse image search and visual matching.|
+Images and video|TinEye|https://tineye.com/|Reverse image search that finds copies and earlier versions.|
+Images and video|Bing Visual Search|https://www.bing.com/visualsearch|Reverse image search from Microsoft.|
+Images and video|Yandex Images|https://yandex.com/images/|Reverse image search that indexes different sites.|
+Images and video|FotoForensics|https://fotoforensics.com/|Error-level analysis to spot possible edits.|
+Images and video|Metadata2Go|https://www.metadata2go.com/|Reads an image’s hidden metadata online.|
+Images and video|InVID-WeVerify|https://www.invid-project.eu/tools-and-services/invid-verification-plugin/|Browser plugin for verifying video and images.|
+Maps and geolocation|Google Earth|https://earth.google.com/|Satellite imagery and 3D views.|
+Maps and geolocation|OpenStreetMap|https://www.openstreetmap.org/|Open map data with detailed local features.|
+Maps and geolocation|Wikimapia|https://wikimapia.org/|Crowd-sourced place descriptions on a map.|
+Maps and geolocation|SunCalc|https://www.suncalc.org/|Sun position and shadow direction for any place and time.|
+Maps and geolocation|Sentinel Hub EO Browser|https://apps.sentinel-hub.com/eo-browser/|Free satellite imagery from Sentinel and other sources.|
+Maps and geolocation|Overpass Turbo|https://overpass-turbo.eu/|Queries OpenStreetMap data for specific features.|
+Links, files and threats|VirusTotal|https://www.virustotal.com/|Scans links, files and hashes with many engines.|
+Links, files and threats|URLScan.io|https://urlscan.io/|Safely scans a URL and shows what it loads.|
+Links, files and threats|WhereGoes|https://wheregoes.com/|Shows where a short or redirecting link ends up.|
+Links, files and threats|AbuseIPDB|https://www.abuseipdb.com/|Community reports on abusive IP addresses.|
+Links, files and threats|AlienVault OTX|https://otx.alienvault.com/|Open threat intelligence on indicators and campaigns.|
+Companies and records|OpenCorporates|https://opencorporates.com/|Large database of registered companies worldwide.|
+Companies and records|SEC EDGAR|https://www.sec.gov/edgar/search/|US public company filings.|
+Companies and records|Companies House (UK)|https://find-and-update.company-information.service.gov.uk/|UK company records and filings.|
+Companies and records|CIPC (South Africa)|https://www.cipc.co.za/|South African company and intellectual property registry.|
+Companies and records|OCCRP Aleph|https://aleph.occrp.org/|Investigative records, leaks and public documents.|
+Directories and frameworks|OSINT Framework|https://osintframework.com/|Directory of free resources sorted by category.|
+Directories and frameworks|Bellingcat Toolkit|https://bellingcat.gitbook.io/toolkit|Curated tools used in open-source investigations.|
+Directories and frameworks|Recon-ng|https://github.com/lanmaster53/recon-ng|Modular reconnaissance framework for the command line.|`.split('\n');
+let dirQ='',dirC='All';
+function dirList(){
+  const q=dirQ.toLowerCase(),rows=DIR.map(l=>l.split('|')).filter(r=>(dirC=='All'||r[0]==dirC)&&(!q||(r[1]+' '+r[3]+' '+r[0]).toLowerCase().includes(q)));
+  const lab={'':'Free','L':'Free tier, limited','W':'Free. Own details or authorized use only'};
+  $('#dl').innerHTML=rows.length?rows.map(r=>`<div class="row" style="align-items:flex-start"><div style="flex:1"><strong>${esc(r[1])}</strong><div class="hint" style="margin:2px 0 0">${esc(r[3])}</div><div class="hint" style="margin:2px 0 0;${r[4]=='W'?'color:var(--warn)':''}">${lab[r[4]]}</div></div><a class="btn" target="_blank" rel="noopener noreferrer" href="${esc(r[2])}" data-l="Directory: ${esc(r[1])}">Open</a></div>`).join(''):'<p class="empty">No tools match.</p>';
+}
+function renderDir(){
+  const cats=Array.from(new Set(DIR.map(l=>l.split('|')[0])));
+  $('#view').innerHTML=`<div class="bar" style="margin:0 0 12px"><input type="text" id="dq" aria-label="Search tools" placeholder="Search tools" style="flex:1;min-width:160px"><select id="dc" aria-label="Category"><option>All</option>${cats.map(c=>`<option>${esc(c)}</option>`).join('')}</select></div><p class="hint" style="margin:0 0 12px">${DIR.length} free tools. Free tiers have limits, and some tools only suit your own details or authorized work.</p><div id="dl"></div>`;
+  $('#dq').value=dirQ;$('#dc').value=dirC;
+  $('#dq').oninput=ev=>{dirQ=ev.target.value;dirList()};
+  $('#dc').onchange=ev=>{dirC=ev.target.value;dirList()};
+  dirList();
+}
+
+let termOut='',termInit=false,thist=[],thi=0;
+let markJob=null;
+function termAppend(t){termOut+=t;if(markJob){const i=termOut.indexOf('__EF_DONE__',markJob.start);if(i>=0){const txt=termOut.slice(markJob.start,i);termOut=termOut.slice(0,i)+termOut.slice(i+11).replace(/^\r?\n/,'');markJob=null;markFrom(txt)}}if(termOut.length>200000){termOut=termOut.slice(-150000);if(markJob)markJob.start=0}const el=document.getElementById('tout');if(el){el.textContent=termOut;el.scrollTop=el.scrollHeight}}
+function initTerm(){if(termInit||!window.ef)return;termInit=true;window.ef.onData(termAppend);window.ef.start()}
+function termSend(cmd,silent){if(!cmd.trim()||!window.ef)return;initTerm();if(!silent){termAppend('> '+cmd+'\n');thist.push(cmd);thi=thist.length}window.ef.write(cmd)}
+function goTerm(cmd){tab='term';document.querySelectorAll('#tabs button').forEach(x=>x.setAttribute('aria-selected',x.dataset.t=='term'));render();const i=$('#tin');if(i){i.value=cmd;i.focus()}}
+function markFrom(t){const all=store.get('tb-found',{}),k=val().toLowerCase();if(!k||type!='username'){toast('Set the target type to Username first');return}const s=new Set(all[k]||[]);let n=0;PROFILES.forEach(([nm,tp])=>{const h=new URL(tp.replace('{u}','x')).hostname.replace(/^www\./,'');if(new RegExp('(^|[^a-z0-9-])'+h.replace(/\./g,'\\.'),'i').test(t)&&!s.has(nm)){s.add(nm);n++}});all[k]=Array.from(s);store.set('tb-found',all);toast(n+' marked')}
+function renderTerm(){
+  const v=$('#view');
+  if(!window.ef){v.innerHTML='<p class="empty">The terminal is only available in the desktop app.</p>';return}
+  initTerm();
+  v.innerHTML=`<p class="hint" style="margin:0 0 10px">Commands run on your computer in one shell session, so cd and virtual environments carry over between commands. Interactive programs that need a full terminal are not supported. Only run commands you trust.</p><pre id="tout" style="height:340px;overflow:auto;margin:0 0 8px"></pre><div class="bar" style="margin:0 0 8px"><input type="text" id="tin" aria-label="Command" placeholder="Type a command and press Enter" style="flex:1;min-width:200px" autocomplete="off" spellcheck="false"><button class="btn" id="trun">Run</button></div><div class="bar"><button class="btn" id="tstop">Stop all</button><button class="btn" id="tclr">Clear</button><button class="btn" id="tcp">Copy output</button><button class="btn" id="tsf">Prefill SpiderFoot UI</button><button class="btn" id="tmk">Mark found accounts from output</button></div>`;
+  const el=$('#tout');el.textContent=termOut;el.scrollTop=el.scrollHeight;
+  const tin=$('#tin'),go=()=>{termSend(tin.value);tin.value=''};
+  tin.onkeydown=ev=>{if(ev.key=='Enter'){go()}else if(ev.key=='ArrowUp'&&thist.length){thi=Math.max(0,thi-1);tin.value=thist[thi];ev.preventDefault()}else if(ev.key=='ArrowDown'){thi=Math.min(thist.length,thi+1);tin.value=thist[thi]||'';ev.preventDefault()}};
+  $('#trun').onclick=go;
+  $('#tstop').onclick=()=>{window.ef.stop();termAppend('\n[shell stopped and restarted]\n')};
+  $('#tclr').onclick=()=>{termOut='';el.textContent=''};
+  $('#tcp').onclick=()=>copy(termOut);
+  $('#tsf').onclick=()=>{tin.value=osx('python3 ./sf.py -l 127.0.0.1:5001');tin.focus()};
+  $('#tmk').onclick=()=>markFrom(termOut);
+  tin.focus();
+}
+
+let utlSec='hash';
+const hexs=b=>Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');
+function ip2n(s){const p=s.split('.').map(Number);if(p.length!=4||p.some(x=>!(x>=0&&x<=255)))return null;return p[0]*16777216+p[1]*65536+p[2]*256+p[3]}
+function n2ip(n){return [Math.floor(n/16777216)%256,Math.floor(n/65536)%256,Math.floor(n/256)%256,n%256].join('.')}
+function cidr(s){const m=s.trim().match(/^([\d.]+)\/(\d{1,2})$/);if(!m)return 'Enter an IPv4 range such as 192.168.1.0/24';const ip=ip2n(m[1]),L=+m[2];if(ip===null||L>32)return 'Invalid address or prefix';const size=Math.pow(2,32-L),net=Math.floor(ip/size)*size,bc=net+size-1,mask=size>=4294967296?0:4294967296-size;return ['Network: '+n2ip(net)+'/'+L,'Netmask: '+n2ip(mask),'Broadcast: '+n2ip(bc),'First host: '+n2ip(L>=31?net:net+1),'Last host: '+n2ip(L>=31?bc:bc-1),'Addresses: '+size].join('\n')}
+function tsConv(s){s=s.trim();if(!s)return '';let d;if(/^-?\d{9,13}$/.test(s)){d=new Date(s.length>=13?+s:+s*1000)}else d=new Date(s);if(isNaN(d))return 'Could not read that date';return ['UTC: '+d.toISOString(),'Local: '+d.toString(),'Unix seconds: '+Math.floor(d/1000),'Unix ms: '+d.getTime()].join('\n')}
+const DEC={
+ 'Base64 decode':s=>{const b=atob(s.trim().replace(/-/g,'+').replace(/_/g,'/'));return new TextDecoder().decode(Uint8Array.from(b,c=>c.charCodeAt(0)))},
+ 'Base64 encode':s=>{let r='';new TextEncoder().encode(s).forEach(x=>r+=String.fromCharCode(x));return btoa(r)},
+ 'URL decode':s=>decodeURIComponent(s),
+ 'URL encode':s=>encodeURIComponent(s),
+ 'Hex decode':s=>new TextDecoder().decode(Uint8Array.from(s.replace(/[^0-9a-f]/gi,'').match(/../g)||[],h=>parseInt(h,16))),
+ 'Hex encode':s=>hexs(new TextEncoder().encode(s))
+};
+function parseTiff(v,t){
+  const le=v.getUint16(t)==0x4949,g16=o=>v.getUint16(o,le),g32=o=>v.getUint32(o,le);
+  const T={0x010F:'Make',0x0110:'Model',0x0131:'Software',0x0132:'DateTime',0x013B:'Artist',0x8298:'Copyright',0x9003:'DateTimeOriginal',0x9004:'DateTimeDigitized',0xA434:'LensModel',0x829A:'ExposureTime',0x829D:'FNumber',0x8827:'ISO'};
+  const SZ={1:1,2:1,3:2,4:4,5:8,7:1,9:4,10:8},out={};
+  function val(e){const ty=g16(e+2),n=g32(e+4),sz=(SZ[ty]||1)*n,p=sz>4?t+g32(e+8):e+8;
+    if(ty==2){let s='';for(let i=0;i<n-1;i++)s+=String.fromCharCode(v.getUint8(p+i));return s.trim()}
+    if(ty==3)return n==1?g16(p):Array.from({length:n},(_,i)=>g16(p+2*i));
+    if(ty==4)return g32(p);
+    if(ty==5||ty==10){const r=[];for(let i=0;i<n;i++){const a=g32(p+8*i),b=g32(p+8*i+4);r.push(b?a/b:0)}return n==1?r[0]:r}
+    return null}
+  function ifd(off,names,store){const n=g16(t+off);for(let i=0;i<n;i++){const e=t+off+2+i*12,tag=g16(e);if(names[tag])store[names[tag]]=val(e);else if(tag==0x8769&&names===T)ifd(g32(e+8),T,store);else if(tag==0x8825&&names===T)store.__gps=g32(e+8)}}
+  ifd(g32(t+4),T,out);
+  if(out.__gps!==undefined){const G={1:'GPSLatitudeRef',2:'GPSLatitude',3:'GPSLongitudeRef',4:'GPSLongitude'},gps={};ifd(out.__gps,G,gps);delete out.__gps;
+    if(gps.GPSLatitude&&gps.GPSLongitude){const f=a=>a[0]+a[1]/60+a[2]/3600;out.GPS=(f(gps.GPSLatitude)*(gps.GPSLatitudeRef=='S'?-1:1)).toFixed(6)+', '+(f(gps.GPSLongitude)*(gps.GPSLongitudeRef=='W'?-1:1)).toFixed(6)}}
+  return out;
+}
+async function exifRead(file){
+  const v=new DataView(await file.arrayBuffer());
+  if(v.getUint16(0)!=0xFFD8)return {error:'Not a JPEG file. This reader supports JPEG only.'};
+  let o=2;
+  while(o<v.byteLength-4){const m=v.getUint16(o),l=v.getUint16(o+2);if(m==0xFFE1&&v.getUint32(o+4)==0x45786966)return parseTiff(v,o+10);if((m&0xFF00)!=0xFF00)break;o+=2+l}
+  return {error:'No EXIF metadata found. Many sites strip it when images are uploaded.'};
+}
+function renderUtil(){
+  const secs=[['hash','Hash'],['exif','Image metadata'],['dec','Decode / encode'],['ts','Timestamp'],['ip','IP range']];
+  $('#view').innerHTML=`<div class="types">${secs.map(([k,l])=>`<button data-us="${k}" aria-pressed="${utlSec==k}">${l}</button>`).join('')}</div><div id="ub"></div>`;
+  const b=$('#ub');
+  if(utlSec=='hash'){
+    b.innerHTML=`<p class="hint" style="margin:0 0 10px">Hashes a file on your device. Nothing is uploaded. Search the SHA-256 on VirusTotal to check a file without opening it.</p><input type="file" id="uf"><pre id="uo" style="margin-top:10px"></pre>`;
+    $('#uf').onchange=async ev=>{const f=ev.target.files[0];if(!f)return;const buf=await f.arrayBuffer(),[a,s]=await Promise.all([crypto.subtle.digest('SHA-256',buf),crypto.subtle.digest('SHA-1',buf)]);$('#uo').textContent=f.name+' ('+f.size+' bytes)\nSHA-256: '+hexs(a)+'\nSHA-1: '+hexs(s)};
+  }else if(utlSec=='exif'){
+    b.innerHTML=`<p class="hint" style="margin:0 0 10px">Reads camera, date and location tags from a JPEG on your device. Nothing is uploaded.</p><input type="file" id="uf" accept="image/jpeg"><pre id="uo" style="margin-top:10px"></pre>`;
+    $('#uf').onchange=async ev=>{const f=ev.target.files[0];if(!f)return;try{const r=await exifRead(f);let t=r.error||Object.entries(r).map(([k,x])=>k+': '+(Array.isArray(x)?x.join(', '):x)).join('\n')||'No readable tags.';if(r.GPS)t+='\n\nThis photo contains location data. Handle it carefully.';$('#uo').textContent=t}catch(_){$('#uo').textContent='Could not read this file.'}};
+  }else if(utlSec=='dec'){
+    b.innerHTML=`<textarea id="ui" style="min-height:90px" placeholder="Paste text here"></textarea><div class="bar">${Object.keys(DEC).map(k=>`<button class="btn" data-dk="${k}">${k}</button>`).join('')}</div><pre id="uo" style="margin-top:10px"></pre>`;
+    b.querySelectorAll('[data-dk]').forEach(x=>x.onclick=()=>{try{$('#uo').textContent=DEC[x.dataset.dk]($('#ui').value)}catch(_){$('#uo').textContent='That input could not be converted.'}});
+  }else if(utlSec=='ts'){
+    b.innerHTML=`<label for="ui">Unix time or a date</label><input type="text" id="ui" placeholder="1732406400 or 2026-11-24 10:00"><pre id="uo" style="margin-top:10px"></pre>`;
+    $('#ui').oninput=ev=>{$('#uo').textContent=tsConv(ev.target.value)};
+  }else{
+    b.innerHTML=`<label for="ui">IPv4 range</label><input type="text" id="ui" placeholder="192.168.1.0/24"><pre id="uo" style="margin-top:10px"></pre>`;
+    $('#ui').oninput=ev=>{$('#uo').textContent=cidr(ev.target.value)};
+  }
+}
+
+const APIS=[{id:'shodan',name:'Shodan',types:['ip'],key:true,note:'IP address lookups. Free keys work for these.'},{id:'virustotal',name:'VirusTotal',types:['domain','ip','url'],key:true,note:'Reputation of a domain, IP or URL.'},{id:'urlscan',name:'URLScan',types:['domain'],key:false,opt:true,note:'Recent scans of a domain. A key is optional and raises limits.'},{id:'abuseipdb',name:'AbuseIPDB',types:['ip'],key:true,note:'Abuse reports for an IP address.'},{id:'crtsh',name:'crt.sh',types:['domain'],key:false,note:'Subdomains from certificate transparency. No key needed.'}];
+async function renderApi(){
+  const v=$('#view');
+  if(!window.ef||!window.ef.keysStatus){v.innerHTML='<p class="empty">API lookups are only available in the desktop app.</p>';return}
+  const st=await window.ef.keysStatus();
+  v.innerHTML=`<p class="hint" style="margin:0 0 12px">Results appear here instead of a new tab. Keys are stored encrypted on this computer and are never shown again or sent anywhere except to that service. ${st.canEncrypt?'':'<span style="color:var(--warn)">Secure storage is not available on this system, so keys cannot be saved.</span>'}</p>`+APIS.map(a=>{const ok=valid()&&a.types.includes(type);return `<div class="tool"><h3>${a.name}</h3><p>${a.note}</p><div class="bar">${a.key||a.opt?`<input type="password" data-kf="${a.id}" aria-label="${a.name} API key" placeholder="${st[a.id]?'Key saved. Paste a new one to replace it':'API key'+(a.opt?' (optional)':'')}" style="flex:1;min-width:200px" autocomplete="off"><button class="btn" data-ks="${a.id}">Save key</button>`:''}<button class="btn" data-ar="${a.id}" ${ok?'':'disabled'}>Run on target</button></div>${ok?'':`<p class="hint">Needs a ${a.types.join(', ')} target.</p>`}</div>`}).join('')+`<pre id="ao" style="margin-top:12px;max-height:380px;overflow:auto"></pre>`;
+  v.querySelectorAll('[data-ks]').forEach(x=>x.onclick=async()=>{const id=x.dataset.ks,inp=v.querySelector('[data-kf="'+id+'"]'),r=await window.ef.keySet(id,inp.value);toast(r.ok?'Key saved':r.error);if(r.ok)renderApi()});
+  v.querySelectorAll('[data-ar]').forEach(x=>x.onclick=async()=>{$('#ao').textContent='Running\u2026';const r=await window.ef.api(x.dataset.ar,val());$('#ao').textContent=r.ok?JSON.stringify(r.data,null,2):'Error: '+r.error});
+}
+
+function renderFw(){
+  const v=$('#view');
+  if(!window.ef){v.innerHTML=`<p class="hint" style="margin:0 0 12px">In the desktop app, this tab shows the full OSINT Framework website inside EveryFinder. In the web version, open it in a new tab.</p><a class="btn" href="https://osintframework.com/" target="_blank" rel="noopener noreferrer" data-l="OSINT Framework">Open osintframework.com</a>`;return}
+  if(document.getElementById('fw'))return;
+  v.innerHTML=`<webview id="fw" src="https://osintframework.com/" partition="persist:framework" style="display:inline-flex;width:100%;height:72vh;border:1px solid var(--line);border-radius:8px;background:#fff"></webview><div class="bar" style="margin-top:8px"><button class="btn" id="fwb">Back</button><button class="btn" id="fwr">Reload</button><a class="btn" href="https://osintframework.com/" target="_blank" rel="noopener noreferrer">Open in browser</a></div><p class="hint">Tool links open in your default browser.</p>`;
+  const w=$('#fw');
+  $('#fwb').onclick=()=>{try{w.goBack()}catch(_){}};
+  $('#fwr').onclick=()=>{try{w.reload()}catch(_){}};
+}
+let imgFile=null,imgUrl='';
+const IMGENG=[['Google Lens','https://lens.google.com/'],['TinEye','https://tineye.com/'],['Bing Visual Search','https://www.bing.com/visualsearch'],['Yandex Images','https://yandex.com/images/']];
+function showPrev(){
+  const el=$('#imp');if(!el)return;
+  if(imgUrl)URL.revokeObjectURL(imgUrl);
+  if(!imgFile){el.innerHTML='';return}
+  imgUrl=URL.createObjectURL(imgFile);
+  el.innerHTML=`<img src="${imgUrl}" alt="Selected image preview" style="max-width:100%;max-height:260px;border-radius:8px;border:1px solid var(--line)"><p class="hint">${esc(imgFile.name)}, ${Math.round(imgFile.size/1024)} KB</p>`;
+}
+function renderImage(){
+  const v=val(),useUrl=type=='image'&&valid(),rv=TOOLS.find(t=>t.name=='Reverse image search');
+  $('#view').innerHTML=`<p class="hint" style="margin:0 0 12px">Pick an image from your device to preview it, then open a search engine and paste or drop the image there. EveryFinder can’t upload it for you, so the image stays on your device until you send it to an engine yourself.</p><label for="imf">Image file</label><input type="file" id="imf" accept="image/*"><div id="imp" style="margin:12px 0"></div><div class="bar"><button class="btn" id="imc">Copy image to clipboard</button></div><div class="tool" style="margin-top:14px"><h3>Open an engine</h3><p>Paste the copied image with Ctrl+V (Cmd+V on Mac), or drag the file onto the page.</p><div class="links">${IMGENG.map(([n,u])=>`<a class="btn" target="_blank" rel="noopener noreferrer" href="${u}" data-l="Image engine: ${n}">${n}</a>`).join('')}</div></div>${useUrl?`<div class="tool"><h3>Search by image URL</h3><p>Searches for the image address you entered on the left.</p><div class="links">${rv.links(v,type).map(([a,u])=>`<a class="btn" target="_blank" rel="noopener noreferrer" href="${esc(u)}" data-l="${a}">${a}</a>`).join('')}</div></div>`:`<p class="hint">To search by web address instead, set the target type to Image URL and enter a direct link to the image.</p>`}<div class="tool"><h3>Check for edits and metadata</h3><p>Look at an image’s hidden metadata, or run error-level analysis to spot areas that may have been edited. Treat results as hints, not proof.</p><div class="links"><a class="btn" target="_blank" rel="noopener noreferrer" href="https://fotoforensics.com/" data-l="FotoForensics">FotoForensics</a><a class="btn" target="_blank" rel="noopener noreferrer" href="https://www.metadata2go.com/" data-l="Metadata2Go">Metadata2Go</a></div></div><div class="tool"><h3>Tips</h3><p>Try several engines, since each indexes different sites. Crop to the main subject if full-image results are poor. Sort for the oldest result to find the original source. Use this to trace where a photo came from, check whether it has been reused, or verify a claim. Don’t use it to identify private individuals from their photos, and avoid uploading sensitive images to third-party sites.</p></div>`;
+  showPrev();
+  $('#imf').onchange=ev=>{imgFile=ev.target.files[0]||null;showPrev()};
+  $('#imc').onclick=async()=>{
+    if(!imgFile){toast('Choose an image first');return}
+    try{const bmp=await createImageBitmap(imgFile),c=document.createElement('canvas');c.width=bmp.width;c.height=bmp.height;c.getContext('2d').drawImage(bmp,0,0);const blob=await new Promise(r=>c.toBlob(r,'image/png'));await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);toast('Image copied')}
+    catch(_){toast('Copy not allowed here. Drag the file into the engine instead')}
+  };
+}
+let vxv='',lastVar=[],vfz=true;
+function fuzz(w){
+  const o=new Set();
+  [['ph','f'],['f','ph'],['ck','k'],['k','c'],['c','k'],['ie','ei'],['ei','ie'],['y','i'],['i','y'],['z','s'],['s','z'],['ou','ow'],['ee','ea'],['ea','ee'],['th','t']].forEach(([a,b])=>{if(w.includes(a))o.add(w.replace(a,b))});
+  for(let i=0;i<w.length-1;i++)if(w[i]==w[i+1])o.add(w.slice(0,i)+w.slice(i+1));
+  for(let i=0;i<w.length-1;i++)if(w[i]!=w[i+1])o.add(w.slice(0,i)+w[i+1]+w[i]+w.slice(i+2));
+  for(let i=1;i<w.length;i++)o.add(w.slice(0,i)+w.slice(i+1));
+  for(let i=1;i<w.length;i++)if(!'aeiou'.includes(w[i])&&w[i]!=w[i+1])o.add(w.slice(0,i+1)+w[i]+w.slice(i+1));
+  o.delete(w);
+  return Array.from(o).filter(s=>s.length>=3);
+}
+function fuzzyVariants(input){
+  const clean=s=>s.toLowerCase().replace(/[^a-z0-9._-]/g,'');
+  const parts=input.trim().split(/\s+/).map(clean).filter(Boolean),out=new Set(),add=s=>{if(s.length>=3&&s.length<=30)out.add(s)};
+  if(parts.length>1){
+    const f=parts[0],l=parts[parts.length-1];
+    fuzz(f).slice(0,10).forEach(a=>['','.','_'].forEach(s=>add(a+s+l)));
+    fuzz(l).slice(0,10).forEach(a=>{['','.','_'].forEach(s=>add(f+s+a));add(f[0]+a)});
+  }else if(parts.length==1){
+    fuzz(parts[0].replace(/[._-]+/g,'')).slice(0,24).forEach(add);
+  }
+  return Array.from(out).slice(0,40);
+}
+function variants(input,extra){
+  const clean=s=>s.toLowerCase().replace(/[^a-z0-9._-]/g,'');
+  const out=new Set(),add=s=>{s=clean(s);if(s.length>=3&&s.length<=30)out.add(s)};
+  const parts=input.trim().split(/\s+/).map(clean).filter(Boolean);
+  let bases=[];
+  if(parts.length>1){
+    const f=parts[0],l=parts[parts.length-1];
+    ['','.','_','-'].forEach(s=>{add(f+s+l);add(l+s+f)});
+    [f[0]+l,f[0]+'.'+l,f[0]+'_'+l,f+l[0],f+'.'+l[0],f+'_'+l[0],l+f[0],f,l].forEach(add);
+    bases=[f+l,f+'.'+l,f+'_'+l];
+  }else if(parts.length==1){
+    const h=parts[0],bits=h.split(/[._-]+/).filter(Boolean),stem=bits.join('');
+    add(h);['','.','_','-'].forEach(s=>add(bits.join(s)));
+    add(h.replace(/\d+$/,''));add(h.replace(/o/g,'0'));add(h.replace(/i/g,'1').replace(/e/g,'3'));
+    add(h.replace(/0/g,'o').replace(/1/g,'i').replace(/3/g,'e'));
+    bases=[h,stem];
+  }
+  const x=clean(extra||'').replace(/[._-]/g,'');
+  if(x)Array.from(out).slice(0,12).concat(bases).forEach(b=>{add(b+x);add(b+'_'+x)});
+  bases.forEach(b=>{['real'+b,'the'+b,b+'official',b+'_','_'+b,b+'1',b+'123',b+'01'].forEach(add)});
+  return Array.from(out).slice(0,60);
+}
+function renderVariants(){
+  const base=(type=='username'||type=='keyword')?val():'';
+  $('#view').innerHTML=`<p class="hint" style="margin:0 0 12px">Generates likely alternate handles. Set the type to Username for a handle, or Keyword for a full name such as Jane Doe. Use it for your own accounts or authorized work, and remember a matching handle doesn’t confirm it’s the same person.</p><label for="vx">Number or year to add (optional)</label><input type="text" id="vx" placeholder="e.g. 87 or 2024" style="max-width:200px"><label style="display:flex;gap:8px;font-weight:400;margin-top:12px"><input type="checkbox" id="vz"> Include possible misspellings</label><div id="vl"></div>`;
+  const draw=()=>{
+    const main=base?variants(base,vxv):[],fz=base&&vfz?fuzzyVariants(base).filter(n=>!main.includes(n)):[];
+    lastVar=main.concat(fz);
+    $('#vl').innerHTML=lastVar.length?`<div class="bar" style="margin:12px 0"><button class="btn" data-va="1">Copy all ${lastVar.length}</button><button class="btn" data-vs="1">Copy Sherlock command</button></div>`+lastVar.map((n,i)=>(i==main.length&&fz.length?`<h3 style="font-size:16px;margin:16px 0 6px">Possible misspellings</h3><p class="hint" style="margin:0 0 8px">Spelling guesses: swapped, missing or doubled letters and similar-sounding spellings.</p>`:'')+`<div class="row"><code>${esc(n)}</code><span class="links"><button class="btn" data-vu="${esc(n)}">Use as target</button><a class="btn" target="_blank" rel="noopener noreferrer" href="${esc(G('"'+n+'"'))}" data-l="Variant search: ${esc(n)}">Search</a></span></div>`).join(''):`<p class="empty">Set the target type to Username or Keyword, then enter a handle or a full name on the left.</p>`;
+  };
+  $('#vx').value=vxv;
+  $('#vz').checked=vfz;
+  $('#vz').onchange=ev=>{vfz=ev.target.checked;draw()};
+  $('#vx').oninput=ev=>{vxv=ev.target.value;draw()};
+  draw();
+}
+const PROFILES=[["GitHub","https://github.com/{u}"],["GitLab","https://gitlab.com/{u}"],["Reddit","https://www.reddit.com/user/{u}"],["X","https://x.com/{u}"],["Instagram","https://www.instagram.com/{u}/"],["Facebook","https://www.facebook.com/{u}"],["TikTok","https://www.tiktok.com/@{u}"],["YouTube","https://www.youtube.com/@{u}"],["Twitch","https://www.twitch.tv/{u}"],["Bluesky","https://bsky.app/profile/{u}.bsky.social"],["Telegram","https://t.me/{u}"],["Medium","https://medium.com/@{u}"],["Dev.to","https://dev.to/{u}"],["Hacker News","https://news.ycombinator.com/user?id={u}"],["Keybase","https://keybase.io/{u}"],["Steam","https://steamcommunity.com/id/{u}"],["Pinterest","https://www.pinterest.com/{u}/"],["SoundCloud","https://soundcloud.com/{u}"],["Patreon","https://www.patreon.com/{u}"],["Docker Hub","https://hub.docker.com/u/{u}"],["npm","https://www.npmjs.com/~{u}"],["PyPI","https://pypi.org/user/{u}/"],["Gravatar","https://gravatar.com/{u}"],["Linktree","https://linktr.ee/{u}"],["Wikipedia","https://en.wikipedia.org/wiki/User:{u}"]];
+function foundUrls(){const v=val();return (store.get('tb-found',{})[v.toLowerCase()]||[]).map(n=>PROFILES.find(p=>p[0]==n)).filter(Boolean).map(([n,t])=>[n,t.replace('{u}',e(v))])}
+function foundPanel(){
+  const el=$('#fdp');if(!el)return;
+  const urls=foundUrls();
+  el.innerHTML=`<div class="tool"><h3>Found accounts (${urls.length})</h3>`+(urls.length?urls.map(([n,u])=>`<div class="row"><span>${esc(n)}</span><a href="${esc(u)}" target="_blank" rel="noopener noreferrer" style="word-break:break-all">${esc(u)}</a></div>`).join('')+`<div class="bar"><button class="btn" data-fc="1">Copy found list</button><button class="btn" data-fa="1">Add to Case</button></div>`:`<p>Nothing ticked yet. Open a profile above and tick Found if it belongs to the right person.</p>`)+`</div>`;
+}
+document.addEventListener('change',ev=>{const n=ev.target.dataset&&ev.target.dataset.fd;if(!n)return;const all=store.get('tb-found',{}),k=val().toLowerCase(),s=new Set(all[k]||[]);if(ev.target.checked)s.add(n);else s.delete(n);all[k]=Array.from(s);store.set('tb-found',all);foundPanel()});
+const CC={'1':'US, Canada and other NANP countries','7':'Russia or Kazakhstan','20':'Egypt','27':'South Africa','30':'Greece','31':'Netherlands','32':'Belgium','33':'France','34':'Spain','39':'Italy','44':'United Kingdom','49':'Germany','52':'Mexico','55':'Brazil','61':'Australia','62':'Indonesia','63':'Philippines','64':'New Zealand','65':'Singapore','66':'Thailand','81':'Japan','82':'South Korea','86':'China','90':'Turkey','91':'India','92':'Pakistan','234':'Nigeria','254':'Kenya','971':'United Arab Emirates','972':'Israel'};
+function phoneQ(v){const d=v.replace(/\D/g,''),t=v.trim(),q=['"'+t+'"'];if(t.startsWith('+'))q.push('"+'+d+'"');q.push('"'+d+'"');return Array.from(new Set(q)).join(' OR ')}
+function phoneHTML(v){
+  const d=v.replace(/\D/g,''),plus=v.trim().startsWith('+');
+  let cc='';if(plus)for(const n of [1,2,3]){if(CC[d.slice(0,n)]){cc=d.slice(0,n);break}}
+  const lead=plus?`Digits: +${d}. ${cc?`Country code +${cc} (${CC[cc]}). `:'Country code isn’t in the built-in list. '}`:'Add the country code with a leading + (for example +27) for better matching. ';
+  return `<div class="tool"><h3>Number details</h3><p>${lead}The country code shows where a number was issued, not who has it or where it is now. Numbers get reassigned and spoofed, so a match isn’t proof of identity. Use these checks for numbers you own, suspicious calls or messages you received, or authorized work.</p></div>`;
+}
+function profHTML(v){
+  const u=e(v),got=store.get('tb-found',{})[v.toLowerCase()]||[];
+  return `<div class="tool"><h3>Profile pages</h3><p>Open a profile, then tick Found if it loads and belongs to the right person. Ticked accounts collect in the panel below. A matching handle doesn’t prove identity, and please don’t use results to harass, stalk or expose anyone.</p>`+PROFILES.map(([n,t])=>`<div class="row"><label style="margin:0;font-weight:400;display:flex;gap:8px;align-items:center;flex:1"><input type="checkbox" data-fd="${esc(n)}" ${got.includes(n)?'checked':''}>${n} found</label><a class="btn" target="_blank" rel="noopener noreferrer" href="${esc(t.replace('{u}',u))}" data-l="Profile: ${n}">Open</a></div>`).join('')+`<div class="bar"><button class="btn" data-pc="1">Copy all URLs</button></div></div><div class="tool"><h3>Paste tool results</h3><p>Paste output from Sherlock, Maigret or Blackbird and EveryFinder ticks the matching platforms.</p><textarea id="pst" style="min-height:90px" placeholder="[+] GitHub: https://github.com/..."></textarea><div class="bar"><button class="btn" data-pm="1">Mark matches</button></div></div><div id="fdp"></div>`;
+}
+function profHTMLOld(v){
+  const u=e(v);
+  return `<div class="tool"><h3>Profile pages</h3><p>Direct links to this handle’s address on each platform. A page that loads may belong to a different person, so match details before drawing conclusions. Don’t use results to harass, stalk or expose anyone.</p><div class="links">`+PROFILES.map(([n,t])=>`<a class="btn" target="_blank" rel="noopener noreferrer" href="${esc(t.replace("{u}",u))}" data-l="Profile: ${n}">${n}</a>`).join("")+`</div><div class="bar"><button class="btn" data-pc="1">Copy all URLs</button></div></div>`;
+}
+function render(){
+  const v=val(),ok=valid(),view=$("#view");
+  $("#err").textContent=v&&!ok?"That doesn’t look like a valid "+TYPES[type].label.toLowerCase()+".":"";
+  if(tab=="case")return renderCase();
+  if(CHECKS[tab])return renderCheck();
+  if(tab=="term")return renderTerm();
+  if(tab=="api")return renderApi();
+  if(tab=="fw")return renderFw();
+  if(tab=="util")return renderUtil();
+  if(tab=="dir")return renderDir();
+  if(tab=="im")return renderImage();
+  if(tab=="vr")return renderVariants();
+  if(tab=="notes"){
+    let saved="";try{saved=localStorage.getItem("tracebook-notes")||""}catch(_){}
+    view.innerHTML=`<label for="notes">Case notes</label><textarea id="notes" placeholder="Findings, sources, timestamps…"></textarea>
+    <div class="bar"><button class="btn" id="addlog">Add session log</button><button class="btn" id="cpnotes">Copy notes</button><button class="btn" id="clr">Clear</button></div>
+    <p class="hint">Notes are saved in this browser only.</p>`;
+    $("#notes").value=saved;
+    $("#notes").oninput=e=>{try{localStorage.setItem("tracebook-notes",e.target.value)}catch(_){}};
+    $("#cpnotes").onclick=()=>copy($("#notes").value);
+    $("#addlog").onclick=()=>{const n=$("#notes");n.value+=(n.value?"\n\n":"")+"Session log\n"+log.map(l=>"- "+l).join("\n");n.oninput({target:n})};
+    $("#clr").onclick=()=>{if(confirm("Clear all notes?")){$("#notes").value="";$("#notes").oninput({target:$("#notes")})}};
+    return;
+  }
+  if(!ok){view.innerHTML=`<p class="empty">Enter a ${TYPES[type].label.toLowerCase()} on the left to build links, dorks, and commands.</p>`;return}
+  if(tab=="lookup"){
+    const list=TOOLS.filter(t=>t.types.includes(type));
+    view.innerHTML=list.map(t=>`<div class="tool"><h3>${t.name}</h3><p>${t.desc}</p><div class="links">${t.links(v,type).map(([l,u])=>`<a class="btn" target="_blank" rel="noopener noreferrer" href="${esc(u)}" data-l="${t.name}: ${l}">${l}</a>`).join("")}</div></div>`).join("");
+    if(type=="username"){view.insertAdjacentHTML("beforeend",profHTML(v));foundPanel()}
+    if(type=="phone")view.insertAdjacentHTML("beforeend",phoneHTML(v));
+  }else if(tab=="dorks"){
+    if(type!="domain"){view.innerHTML=`<p class="empty">Dorks are built around a domain. Switch the target type to Domain.</p>`;return}
+    view.innerHTML=`<p class="hint" style="margin:0 0 12px">Each dork opens in Google. Use them to see what your own or an authorized target exposes publicly.</p>`+
+    DORKS.map(([n,f],i)=>{const q=f(v);return `<div class="tool"><h3 style="font-size:16px">${n}</h3><div class="row" style="margin-top:8px"><code>${esc(q)}</code><span class="links"><button class="btn" data-c="${i}">Copy</button><a class="btn" target="_blank" rel="noopener noreferrer" href="https://www.google.com/search?q=${e(q)}" data-l="Dork: ${n}">Search</a></span></div></div>`}).join("");
+  }else{
+    const d=type=="domain"?v:"example.com";
+    view.innerHTML=`<p class="hint" style="margin:0 0 12px">Commands are for macOS and Linux. On Windows, activate a virtual environment with venv\\Scripts\\activate instead of source venv/bin/activate.</p>`+`<label style="display:flex;gap:8px;font-weight:400;margin:0 0 10px"><input type="checkbox" data-si ${showIntr?'checked':''}> Show tools that probe other sites or breach data</label><div class="types">${[['unix','macOS / Linux'],['win','Windows']].map(([k,l])=>`<button data-os="${k}" aria-pressed="${os==k}">${l}</button>`).join('')}</div>`+TOOLKIT.map((t,i)=>{if(t.warn&&!showIntr)return '';const miss=t.need&&type!=t.need;const run=t.run(miss?({username:'exampleuser',email:'name@example.com',phone:'+27115550123'}[t.need]||'example.com'):v);return `<div class="tool"><h3>${t.name}</h3><p>${t.desc}</p>${t.warn?`<p style="color:var(--warn)">${t.warn}</p>`:''}
+    <label>Install</label><pre>${esc(osx(t.setup))}</pre><label>Run${miss?" (shown with a sample domain)":""}</label><pre>${esc(osx(run))}</pre>
+    <button class="btn" data-r="${i}">Copy run command</button>${window.ef?`<button class="btn" data-rt="${i}">Run in terminal</button>${t.need=="username"?`<button class="btn" data-rm="${i}">Run and mark found</button>`:''}<button class="btn" data-rs="${i}">Run install in terminal</button>`:''}${t.ui?`<label style="margin-top:14px">Or start the web UI</label><pre>${esc(osx(t.ui))}</pre><button class="btn" data-u="${i}">Copy web UI command</button>${window.ef?`<button class="btn" data-ru="${i}">Run web UI in terminal</button>`:''}`:""}</div>`}).join("");
+  }
+}
+document.addEventListener("click",ev=>{
+  const b=ev.target.closest("button,a");if(!b)return;
+  if(b.dataset.k){type=b.dataset.k;renderTypes();render()}
+  else if(b.closest("#tabs")){tab=b.dataset.t;document.querySelectorAll("#tabs button").forEach(x=>x.setAttribute("aria-selected",x==b));render()}
+  else if(b.dataset.c!==undefined)copy(DORKS[+b.dataset.c][1](val()));
+  else if(b.dataset.r!==undefined)copy(osx(TOOLKIT[+b.dataset.r].run(val())));
+  else if(b.dataset.va!==undefined)copy(lastVar.join('\n'));
+  else if(b.dataset.vs!==undefined)copy('sherlock '+lastVar.join(' ')+' --print-found');
+  else if(b.dataset.vu!==undefined){type='username';$('#target').value=b.dataset.vu;tab='lookup';document.querySelectorAll('#tabs button').forEach(x=>x.setAttribute('aria-selected',x.dataset.t=='lookup'));renderTypes();render()}
+  else if(b.dataset.fc!==undefined)copy(foundUrls().map(([n,u])=>n+': '+u).join('\n'));
+  else if(b.dataset.fa!==undefined){const f=foundUrls();findings.push({t:'Accounts found for '+val()+':\n'+f.map(([n,u])=>n+' '+u).join('\n'),s:'',c:'Medium',g:'username',at:Date.now()});store.set('tb-case',findings);toast('Added to Case')}
+  else if(b.dataset.rt!==undefined){goTerm(osx(TOOLKIT[+b.dataset.rt].run(val())))}
+  else if(b.dataset.ru!==undefined){goTerm(osx(TOOLKIT[+b.dataset.ru].ui.split('\n')[0]))}
+  else if(b.dataset.rs!==undefined){const lines=osx(TOOLKIT[+b.dataset.rs].setup).split('\n').filter(l=>l.trim()&&!l.trim().startsWith('#'));if(confirm('Run these install commands in the terminal?\n\n'+lines.join('\n'))){tab='term';document.querySelectorAll('#tabs button').forEach(x=>x.setAttribute('aria-selected',x.dataset.t=='term'));render();lines.forEach(termSend)}}
+  else if(b.dataset.rm!==undefined){if(type!='username'||!valid()){toast('Set the target type to Username and enter a handle first');return}goTerm('');const cmd=osx(TOOLKIT[+b.dataset.rm].run(val()));markJob={start:termOut.length};termSend(cmd);termSend('echo __EF_DONE__',true)}
+  else if(b.dataset.us){utlSec=b.dataset.us;renderUtil()}
+  else if(b.dataset.rc!==undefined){const r=recent[+b.dataset.rc];type=r.t;$('#target').value=r.v;renderTypes();render()}
+  else if(b.dataset.ex){saveFile('everyfinder-case.'+b.dataset.ex,b.dataset.ex=='md'?mdReport():htmlReport())}
+  else if(b.dataset.os){os=b.dataset.os;render()}
+  else if(b.dataset.pm!==undefined){const t=$('#pst').value,all=store.get('tb-found',{}),k=val().toLowerCase(),s=new Set(all[k]||[]);let n=0;PROFILES.forEach(([nm,tp])=>{const h=new URL(tp.replace('{u}','x')).hostname.replace(/^www\./,'');if(new RegExp('(^|[^a-z0-9-])'+h.replace(/\./g,'\\.'),'i').test(t)&&!s.has(nm)){s.add(nm);n++}});all[k]=Array.from(s);store.set('tb-found',all);toast(n+' marked');render()}
+  else if(b.dataset.d!==undefined){findings.splice(+b.dataset.d,1);store.set('tb-case',findings);caseList()}
+  else if(b.dataset.u!==undefined)copy(osx(TOOLKIT[+b.dataset.u].ui));
+  else if(b.dataset.pc!==undefined)copy(PROFILES.map(([n,t])=>t.replace("{u}",e(val()))).join("\n"));
+  else if(b.dataset.l){log.push(b.dataset.l+" → "+val());renderLog()}
+});
+$("#target").addEventListener("input",render);
+renderTypes();renderLog();renderRecent();render();
+{const intro=document.getElementById('intro');if(intro){const done=()=>intro.remove();intro.addEventListener('animationend',ev=>{if(ev.target===intro)done()});intro.onclick=done;setTimeout(done,3500)}}
+</script>
+</body>
+</html>
